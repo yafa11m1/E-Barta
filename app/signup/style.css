@@ -1,0 +1,16 @@
+/* styles.module.css */
+.slide-up-enter-active {
+    transition: transform 0.5s;
+}
+
+.slide-up-leave-active {
+    transition: transform 0.5s;
+}
+
+.slide-up-enter {
+    transform: translateY(100%);
+}
+
+.slide-up-leave-to {
+    transform: translateY(100%);
+}
