@@ -16,15 +16,14 @@ import { db } from "../firebase";
 
 
 
-const Chatlist = ({ setactive }) => {
-    const {user,auth,isLoggedIn, setLoggedin } =  UserAuth();
+const Chatlist = ({ myRsa,user, setactive }) => {
     const [loading, setLoading] = useState(true);
 
 
     useEffect(() => {
         const checkAuthentication = async () => {
           await new Promise((resolve) => setTimeout(resolve, 500));
-          setLoading(false);
+          setLoading(prevState=>{ return false});
           
         };
         checkAuthentication();
@@ -43,7 +42,7 @@ const Chatlist = ({ setactive }) => {
     //   },[user])
     useEffect(() => {
         const unSub = onSnapshot(doc(db, 'users', user&&user.uid||'a' ), (doc) => {
-          doc.exists() && setChatLst(doc.data().Chats);
+          doc.exists() && setChatLst(prevState=>{ return doc.data().Chats});
         });
     
         return () => {
@@ -84,10 +83,11 @@ const Chatlist = ({ setactive }) => {
                                
                                 return (
                                     <ChatCard
+                                      user={user}
                                         key={chatID}
                                         Uid={chatID.replace(user.uid,'')}
                                         chatId = {chatID}
-                                        onclk = {()=>setactive(chatID.replace(user.uid,''))}
+                                        onclk = {()=>setactive(prevState=>{ return chatID.replace(user.uid,'')})}
                                         
                                     />
                                     );

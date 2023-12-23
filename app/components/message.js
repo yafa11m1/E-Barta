@@ -1,17 +1,25 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { UserAuth } from "../Context/AuthContext";
 import { decryptAES } from "../aes";
+import { inDB } from "../inDB";
 
 
-const Message = ({ message, freindphoto,ChatId }) => {
-  const { user ,placeholderurl} = UserAuth();
-  const keys = JSON.parse(sessionStorage.getItem(ChatId));
+const Message = ({ user,  message, freindphoto,ChatId }) => {
+  const { placeholderurl} = UserAuth();
+  const [keys, setMyRSA] = useState(null)
+  useEffect(()=>{
+    const keySet = async()=> {
+      const chatkey = await inDB.chatCred.where("chatId").equals(ChatId).first();
+        // console.log(rsakey)
+        setMyRSA(chatkey) 
+    }
+    if(ChatId){
+      keySet();
+    }
+    
 
-  const ref = useRef();
+},[user])
 
-  useEffect(() => {
-    ref.current?.scrollIntoView({ behavior: "smooth" });
-  }, [message]);
   const scrollToBottom = () => {
     const chatBox = document.getElementById('messagescroll');
     if (chatBox) {
@@ -56,7 +64,7 @@ const Message = ({ message, freindphoto,ChatId }) => {
                     <p>{message.size}</p>
                 </div>
             </div></a>
-            : <p class={`bg-blue-600  p-2 text-xl  rounded-b-xl ${message.SenderId === user.uid ? "rounded-l-xl":"rounded-r-xl"}  `}> {message.SenderId === user.uid ? decryptAES(message.Text,keys.key, keys.iv):decryptAES(message.Text,keys.friend_key, keys.friend_iv) }  </p>
+            : <p class={`bg-blue-600  p-2 text-xl  rounded-b-xl ${message.SenderId === user.uid ? "rounded-l-xl":"rounded-r-xl"}  `}> {keys?message.SenderId === user.uid  ? decryptAES(message.Text,keys.key, keys.iv):decryptAES(message.Text,keys.frnd_key, keys.frnd_iv):"" }  </p>
 
             }
            

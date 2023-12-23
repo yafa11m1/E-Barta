@@ -14,9 +14,9 @@ const UserSearch = ({setactive}) => {
   const [searchResults, setSearchResults] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const ClearDrop = ()=>{
-    setFormData({
+    setFormData(prevState=>{ return {
       param: '', // Changed "peram" to "param"
-    });
+    }});
     setIsDropdownOpen(false);
 
   }
@@ -32,13 +32,13 @@ const UserSearch = ({setactive}) => {
     console.log('Enter key pressed!');
   } else {
     // If Enter key was not pressed, update the form data
-    setFormData({ ...formData, [name]: value });
+    setFormData(prevState=>{ return { ...formData, [name]: value }});
   }
   };
   const clicked =async (FriendUid)=> {
     await addChat(user.uid,FriendUid);
-    setIsDropdownOpen(false);
-    setactive(FriendUid)
+    setIsDropdownOpen(prevState=>{ return false});
+    setactive(prevState=>{ return FriendUid})
   }
   const handleSearch = async () => {
     
@@ -127,7 +127,7 @@ const UserSearch = ({setactive}) => {
         <br/><br/>
           <div>
           {searchResults.map((user, index) => (
-            <Link key={index} onClick={()=> clicked(user.Uid)} href={`#`}>
+            <div key={index} onClick={()=> clicked(user.Uid)} href={`#`}>
               <div class="p-2 m-2 w-16  cursor-pointer  rounded-lg shadow-lg   hover:scale-105 hover:shadow-xl rounded-md  lg:w-80  lg:flex">
                           
                           <div class="lg:flex-auto lg:justify-items-center lg:m p-1 m-2" >
@@ -144,7 +144,7 @@ const UserSearch = ({setactive}) => {
                           </div>  
                       </div>
              
-            </Link>
+            </div>
             
           ))}
           </div>

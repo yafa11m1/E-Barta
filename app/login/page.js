@@ -1,6 +1,6 @@
 // pages/login.js
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { logInWithEmailAndPassword, signInWithGoogle } from '../firebase';
 import { UserAuth } from '../Context/AuthContext';
 import { useRouter } from 'next/navigation'
@@ -51,6 +51,12 @@ const Login = () => {
         }
         
     }
+    useEffect(()=>{  if(user){
+        router.push( "/dashboard", undefined, { shallow: true });
+        
+
+    }},[user])
+  
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
             <div className="bg-white p-8 rounded-lg shadow-md w-96">

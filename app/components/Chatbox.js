@@ -4,19 +4,16 @@ import Messages from './messages';
 import { GetRSApubKey, updateInfoRSA, updatePubkey, userInfo } from '../firedb';
 import Input from '@/app/components/input';
 import CryptoJS from 'crypto-js';
-import crypto from 'crypto';
-import { decryptWithPrivateKeyInteger, encryptWithPublicKeyInteger } from '../rsa';
-import { useRouter } from 'next/router';
+import { decryptWithPrivateKeyInteger, encryptWithPublicKeyInteger, generateRandomValue } from '../rsa';
+import { inDB } from '../inDB';
 
 
-const Chatbox = ({uid}) => {
+const Chatbox = ({user,myRsa,uid}) => {
     // console.log(uid);
-    const { user,placeholderurl } = UserAuth();
+    const {placeholderurl } = UserAuth();
+    
 
-    const generateRandomValue = () => {
-        // Generate a random 16-byte value (128 bits) and convert it to a hex string
-        return CryptoJS.lib.WordArray.random(16).toString(CryptoJS.enc.Hex);
-      };
+    
 
     const [info,setInfo] = useState({
         Uid:"",
@@ -25,9 +22,13 @@ const Chatbox = ({uid}) => {
         Fullname:""
     })
     
-    
     const id = uid;
-    const chatId = user ? user.uid > id ? user.uid + id : id + user.uid : "loading";
+    const [chatId, setchatId] = useState(user ? user.uid > id ? user.uid + id : id + user.uid : "loading")
+    
+    useEffect(()=>{
+        setchatId(user ? user.uid > id ? user.uid + id : id + user.uid : "loading")
+        console.log(id,chatId);
+    },[uid])
     // userconsole.log('use: ',user.uid)
     // console.log(id)
     // Function to scroll the chat box to the bottom
@@ -49,48 +50,84 @@ const Chatbox = ({uid}) => {
     }, [id]); // Empty dependency array ensures that this effect runs only once after the initial render
 
     useEffect(()=>{
-        if(typeof window  !== 'undefined'&& chatId !=='loading' && id){
-            const keys = JSON.parse(sessionStorage.getItem(chatId));
-            // console.log(keys)
-            if(keys&&keys.iv!=''){
-
-                console.log(keys);
-                const secret = keys.iv+":"+keys.key;
-                console.log(secret);
-                GetRSApubKey(chatId,id).then((Frndkey)=>{
-                // Updating Encrypted Keys
-                console.log("friend: ",Frndkey)
-                const encSecret = encryptWithPublicKeyInteger(secret,Frndkey.RSA); // ecncrypted IV and Key with Friends RSA Pub key
-                updatePubkey(chatId,user.uid,encSecret);
-                const frndAESKey = decryptWithPrivateKeyInteger(Frndkey.AES,sessionStorage.getItem("MyPriv"),sessionStorage.getItem("MyPub"))
-                const [FiV, Fkey] = frndAESKey.split(":");
-                const updatedkeys = {
-                    ...keys,
-                    friend_iv:FiV,
-                    friend_key:Fkey
+        const exchangeKey = async ()=> {
+          
+                // const keys = JSON.parse(sessionStorage.getItem(chatId));
+                const keys2 = await inDB.chatCred.where("chatId").equals(chatId).first();
+                console.log(keys2)
+                if(keys2&&keys2.iv!=''){
+    
+                    // console.log(keys);
+                    const secret = keys2.iv+":"+keys2.key;
+                    console.log(secret);
+                    GetRSApubKey(chatId,id).then((Frndkey)=>{
+                    // Updating Encrypted Keys
+                    console.log(Frndkey)
+                    const encSecret = encryptWithPublicKeyInteger(secret,Frndkey.RSA); // ecncrypted IV and Key with Friends RSA Pub key
+                    updatePubkey(chatId,user.uid,encSecret);
+                    if(Frndkey.AES!=''){
+                        decryptWithPrivateKeyInteger(Frndkey.AES,user.uid).then((frndAESKey)=>{
+                            const [FiV, Fkey] = frndAESKey.split(":");
+                            console.log(frndAESKey)
+    
+                            const updatedkeys = {
+                                ...keys2,
+                                frnd_iv:FiV,
+                                frnd_key:Fkey
+                            }
+                            // sessionStorage.setItem(chatId,JSON.stringify(updatedkeys));
+                            console.log(updatedkeys)
+                            inDB.chatCred.put(updatedkeys)
+    
+                        })
+                    }
+                    console.log("friend: ",Frndkey)
+                  
+                    
+                    
+                    
+                });
                 }
-                sessionStorage.setItem(chatId,JSON.stringify(updatedkeys));
-                
-            });
-            }
-            else{
-                console.log("not found",keys);
-                sessionStorage.setItem(chatId,JSON.stringify({
-                    iv:generateRandomValue(),
-                    key:generateRandomValue(),
-                    Id:chatId,
-                    friend_iv:'',
-                    friend_key:''
-                 }))
-                 const reloadTimeout = setTimeout(() => {
-                    location.reload();
-                  }, 5000);
-              
-                  // Cleanup function to clear the timeout when the component is unmounted
-                  return () => {
-                    clearTimeout(reloadTimeout);
-                  };
-            }
+                else{
+                    console.log("not found",keys2);
+                    // sessionStorage.setItem(chatId,JSON.stringify({
+                    //     iv:generateRandomValue(),
+                    //     key:generateRandomValue(),
+                    //     Id:chatId,
+                    //     friend_iv:'',
+                    //     friend_key:''
+                    //  }))
+    //   chatCred: 'chatId, iv, key, frnd_iv, frnd_key',
+                        const IV = generateRandomValue();
+                        const KEY = generateRandomValue();
+                        inDB.chatCred.add({
+                            chatId:chatId,
+                            iv:IV,
+                            key:KEY,
+                            frnd_iv:'',
+                            frnd_key:''
+                        
+                        }).then(()=>{
+                            const secret = IV+":"+KEY;
+                            GetRSApubKey(chatId,id).then((Frndkey)=>{
+                                // Updating Encrypted Keys
+                                const encSecret = encryptWithPublicKeyInteger(secret,Frndkey.RSA); // ecncrypted IV and Key with Friends RSA Pub key
+                                
+                                updatePubkey(chatId,user.uid,encSecret);
+                            })
+                        })
+                     const reloadTimeout = setTimeout(() => {
+                        location.reload();
+                      }, 5000);
+                  
+                      // Cleanup function to clear the timeout when the component is unmounted
+                      return () => {
+                        clearTimeout(reloadTimeout);
+                      };
+                }
+        
+    }
+        
             
             
             // keys&&keys.iv==""?setSecret(keys):setSecret({
@@ -106,10 +143,16 @@ const Chatbox = ({uid}) => {
             //     // const encSecret = encryptWithPublicKeyInteger(secret,FrndPubkey); // ecncrypted IV and Key with Friends RSA Pub key
             //     // updatePubkey(chatId,user.uid,encSecret);
             // });
+            if(chatId!='loading'&&!chatId.includes('null')){
+                exchangeKey();
+            }
             
+            // return () => {
+            //     exchangeKey();
+            //   };
 
-        }
-    },[id,chatId])
+        
+    },[uid])
 //   console.log(chatId);
   useEffect(()=>{
     userInfo(id).then((r)=>{
@@ -146,7 +189,7 @@ const Chatbox = ({uid}) => {
     
     
     <div class="overflow-auto " id='messagescroll'>   
-    <Messages scroll={scrollToBottom} freindphoto ={info&&info.PhotoUrl} ChatId={chatId} />
+    <Messages user={user} scroll={scrollToBottom} freindphoto ={info&&info.PhotoUrl} ChatId={chatId} />
     </div>    
     
     
@@ -155,7 +198,7 @@ const Chatbox = ({uid}) => {
     
                 <div class="">
                     {/* input  */}
-                    <Input ChatId={chatId}/>
+                    <Input keys={myRsa} user={user} ChatId={chatId}/>
                 </div>
     
             </div>

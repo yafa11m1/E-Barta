@@ -50,7 +50,7 @@ const Header = () => {
         <hr/>
 
         <div className=" order-last grid  items-center sm:justify-items-center">
-            <a href="#"> <Image src={user&&user.photoURL?user.photoURL: placeholderurl} alt=""
+            <a href="/Profile"> <Image src={user&&user.photoURL?user.photoURL: placeholderurl} alt=""
                             width={100}
                             height={100}
                     className="rounded-full w-12 h-12 hover:ring-offset-2 hover:ring-2 "/></a>
@@ -93,7 +93,7 @@ const Header = () => {
         
 
         <div className=" grid items-center   sm:justify-items-center">
-            <a href="/Profile">
+            <a href="/">
                 <Image src={settings} alt="" className="w-8 h-8 hover:bg-gray-200 rounded-md"/>
             </a>
         </div>

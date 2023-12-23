@@ -14,6 +14,8 @@ import {
     arrayUnion,
     Timestamp,
   } from "firebase/firestore";
+import { inDB } from "./inDB";
+import { decryptWithPrivateKeyInteger, encryptWithPublicKeyInteger, generateRandomValue } from "./rsa";
 
 
 const addUserInfotoCloudDB = async(uid, photourl, username, email,gender,phone, fullname)=>{
@@ -118,8 +120,10 @@ const updateInfoRSA = async (uid) => {
     try{
         const userDocRef = doc(db, 'users', uid);
         // console.log("update call ",[uid,name,gender,phone, photourl]);
+        const rsakey = await inDB.userCred.where("uid").equals(uid).first()
+        // console.log(rsakey, rsakey.n)
         await updateDoc(userDocRef, {
-            RSAkey:sessionStorage.getItem("MyPub")
+            RSAkey:rsakey.n
 
           });
         return "RSA key updated"
@@ -204,18 +208,112 @@ const updateChatsArray = async (sender, receiver, chatid) => {
       console.error('Error updating Chats array:', error);
     }
   };
+  export const exchangeKey = async (userUid,FriendUid)=> {
+        
+    // const keys = JSON.parse(sessionStorage.getItem(chatId));
+    const chatId = userUid > FriendUid ? userUid + FriendUid : FriendUid + userUid
 
+    const keys2 = await inDB.chatCred.where("chatId").equals(chatId).first();
+    // console.log(keys2)
+    if(keys2&&keys2.iv!=''){
+
+        // console.log(keys);
+        const secret = keys2.iv+":"+keys2.key;
+        console.log(secret);
+        GetRSApubKey(chatId,FriendUid).then((Frndkey)=>{
+        // Updating Encrypted Keys
+        const encSecret = encryptWithPublicKeyInteger(secret,Frndkey.RSA); // ecncrypted IV and Key with Friends RSA Pub key
+        updatePubkey(chatId,userUid,encSecret);
+        if(Frndkey.AES!=''){
+            decryptWithPrivateKeyInteger(Frndkey.AES,userUid).then((frndAESKey)=>{
+                const [FiV, Fkey] = frndAESKey.split(":");
+                console.log(frndAESKey)
+
+                const updatedkeys = {
+                    ...keys2,
+                    frnd_iv:FiV,
+                    frnd_key:Fkey
+                }
+                // sessionStorage.setItem(chatId,JSON.stringify(updatedkeys));
+                // console.log(updatedkeys)
+                inDB.chatCred.put(updatedkeys)
+
+            })
+        }
+        // console.log("friend: ",Frndkey)
+      
+        
+        
+        
+    });
+    }
+    else{
+
+        const IV = generateRandomValue();
+        const KEY = generateRandomValue();
+        GetRSApubKey(chatId,FriendUid).then((Frndkey)=>{
+            // Updating Encrypted Keys
+            const secret = IV+":"+KEY;
+            GetRSApubKey(chatId,FriendUid).then((Frndkey)=>{
+                // Updating Encrypted Keys
+                const encSecret = encryptWithPublicKeyInteger(secret,Frndkey.RSA); // ecncrypted IV and Key with Friends RSA Pub key
+                
+                updatePubkey(chatId,userUid,encSecret);
+            })
+            if(Frndkey.AES!=''){
+                decryptWithPrivateKeyInteger(Frndkey.AES,userUid).then((frndAESKey)=>{
+                    const [FiV, Fkey] = frndAESKey.split(":");
+                    console.log(frndAESKey)
+    
+                    const updatedkeys = {
+                        chatId:chatId,
+                        iv:IV,
+                        key:KEY,
+                        frnd_iv:FiV,
+                        frnd_key:Fkey
+                    }
+                    // sessionStorage.setItem(chatId,JSON.stringify(updatedkeys));
+                    console.log(updatedkeys)
+                    inDB.chatCred.add(updatedkeys)
+    
+                })
+            }
+            else{
+                inDB.chatCred.add({
+                    chatId:chatId,
+                    iv:IV,
+                    key:KEY,
+                    frnd_iv:'',
+                    frnd_key:''
+        
+                })
+
+            }
+            // console.log("friend: ",Frndkey)
+          
+            
+            
+            
+        });
+       
+        
+    }
+}
   const addChat = async(userUid,FriendUid)=>{
     // console.log(userUid,FriendUid);
     const rsa = await GetRSAKey(FriendUid);
+    const chatId = userUid > FriendUid ? userUid + FriendUid : FriendUid + userUid
+    
     try{
         const chatdocRef = doc(db,'chats',userUid>FriendUid?userUid+FriendUid:FriendUid+userUid);
         const chatdata = await getDoc(chatdocRef);
+        const rsakey = await inDB.userCred.where("uid").equals(userUid).first()
+
         !chatdata.exists()? await setDoc(chatdocRef,{
             messages:[],
             Keys:{
                 RSA:{
-                    [userUid]:sessionStorage.getItem("MyPub")||"",
+                    [userUid]:rsakey.n||"",
                     [FriendUid]:rsa
                 },
                 AES:{
@@ -224,7 +322,8 @@ const updateChatsArray = async (sender, receiver, chatid) => {
                 }
             }
           }):"";
-        
+          
+         await exchangeKey(userUid,FriendUid);
     }
     catch(err){
         console.log(err);
@@ -251,9 +350,12 @@ const GetRSApubKey = async(chatId,FriendUid)=>{
 }
 
 const updatePubkey = async(chatId,userUid,secret)=>{
+    console.log(chatId,userUid,secret)
     try{
         const chatdocRef = doc(db,'chats',chatId);
         const chatdata = await getDoc(chatdocRef);
+        const rsakey = await inDB.userCred.where("uid").equals(userUid).first()
+
         if (chatdata.exists) {
             const existingData = chatdata.data();
             const updatedData = {
@@ -266,7 +368,7 @@ const updatePubkey = async(chatId,userUid,secret)=>{
                 },
                 RSA: {
                     ...existingData.Keys.RSA,
-                    [userUid]: sessionStorage.getItem("MyPub"),
+                    [userUid]: rsakey.n,
                   },
               },
             };
@@ -285,6 +387,7 @@ const updateRSAkey = async(chatId,userUid)=>{
     try{
         const chatdocRef = doc(db,'chats',chatId);
         const chatdata = await getDoc(chatdocRef);
+        const rsakey = await inDB.userCred.where("uid").equals(userUid).first()
         if (chatdata.exists) {
             const existingData = chatdata.data();
             const updatedData = {
@@ -293,7 +396,7 @@ const updateRSAkey = async(chatId,userUid)=>{
                 ...existingData.Keys,
                 RSA: {
                     ...existingData.Keys.RSA,
-                    [userUid]: sessionStorage.getItem("MyPub"),
+                    [userUid]: rsakey.n,
                   },
               },
             };

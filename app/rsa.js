@@ -1,4 +1,5 @@
 import forge from 'node-forge';
+import { inDB } from './inDB';
 
 // Generate RSA key pair with 512-bit prime
 const keyPair = forge.pki.rsa.generateKeyPair({ bits: 2048 });
@@ -18,23 +19,25 @@ export const encryptWithPublicKeyInteger = (plaintext, pubKey) => {
     key,
     E
   );
-  console.log(publicKeyInstance)
+  // console.log(publicKeyInstance)
   const encrypted = publicKeyInstance.encrypt(forge.util.encodeUtf8(plaintext), 'RSA-OAEP');
 
   return forge.util.encode64(encrypted);
 };
 
 // Function to decrypt using RSA private key (integer format)
-export const decryptWithPrivateKeyInteger = (ciphertext, privKey , pubKey) => {
+export const decryptWithPrivateKeyInteger = async (ciphertext,userUid) => {
+  const rsakey = await inDB.userCred.where("uid").equals(userUid).first()
+  console.log(rsakey)
   const privateKeyInstance = forge.pki.setRsaPrivateKey(
-    new forge.jsbn.BigInteger(pubKey,16),
+    new forge.jsbn.BigInteger(rsakey.n,16),
     new forge.jsbn.BigInteger('10001', 16),
-    new forge.jsbn.BigInteger(privKey, 16),
-    new forge.jsbn.BigInteger(sessionStorage.getItem('p'), 16),
-    new forge.jsbn.BigInteger(sessionStorage.getItem('q'), 16),
-    new forge.jsbn.BigInteger(sessionStorage.getItem('dP'), 16),
-    new forge.jsbn.BigInteger(sessionStorage.getItem('dQ'), 16),
-    new forge.jsbn.BigInteger(sessionStorage.getItem('qInv'), 16),
+    new forge.jsbn.BigInteger(rsakey.d, 16),
+    new forge.jsbn.BigInteger(rsakey.p, 16),
+    new forge.jsbn.BigInteger(rsakey.q, 16),
+    new forge.jsbn.BigInteger(rsakey.dp, 16),
+    new forge.jsbn.BigInteger(rsakey.dq, 16),
+    new forge.jsbn.BigInteger(rsakey.qInv, 16),
 
   );
 
@@ -46,8 +49,14 @@ export const decryptWithPrivateKeyInteger = (ciphertext, privKey , pubKey) => {
   return forge.util.decodeUtf8(decrypted);
 };
 
+export const generateRandomValue = () => {
+  // Generate a random 16-byte value
+  const bytes = forge.random.getBytesSync(16);
+  // Convert it to a hex string
+  return forge.util.bytesToHex(bytes);
+};
 // Function to get the public key in integer format
-export const getKeyInteger = () => {
+export const getKeyInteger = (ID) => {
     // Generate RSA key pair with 512-bit prime
     const keyPair = forge.pki.rsa.generateKeyPair({ bits: 1024 });
     console.log(keyPair)
@@ -67,6 +76,18 @@ export const getKeyInteger = () => {
   sessionStorage.setItem("dQ",dQ);
   sessionStorage.setItem("dP",dp);
   sessionStorage.setItem("qInv",Qinv);
+
+  inDB.userCred.add({
+    uid:ID,
+    p:p,
+    q:q,
+    d:privateKey,
+    n:publicKey,
+    qInv:Qinv,
+    dp:dp,
+    dq:dQ
+
+  })
 
 
 

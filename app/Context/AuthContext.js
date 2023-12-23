@@ -23,11 +23,11 @@ export const AuthContextProvider = ({ children }) => {
 
     useEffect( () => {
         const unsubscribe =   onAuthStateChanged(auth, (currentUser) => {
-          setUser(currentUser);
+          setUser(prevState=>{ return currentUser});
           currentUser?sessionStorage.setItem("uid",currentUser.uid):"";
         });
         return ()=>  unsubscribe();
-      }, [user]);
+      }, []);
   return (
     <AuthContext.Provider value={{auth, user,
         db,
