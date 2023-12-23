@@ -2,16 +2,23 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { UserAuth } from "../Context/AuthContext";
 import { decryptAES } from "../aes";
 import { inDB } from "../inDB";
+import { exchangeKey } from "../firedb";
 
 
 const Message = ({ user,  message, freindphoto,ChatId }) => {
   const { placeholderurl} = UserAuth();
   const [keys, setMyRSA] = useState(null)
+  const [msg, setMsg] = useState("Loading...")
   useEffect(()=>{
     const keySet = async()=> {
       const chatkey = await inDB.chatCred.where("chatId").equals(ChatId).first();
         // console.log(rsakey)
-        setMyRSA(chatkey) 
+        setMyRSA(chatkey)
+        if(message.SenderId != user.uid && chatkey.frnd_iv==""){
+          await exchangeKey(user.uid, ChatId.replace(user.uid, ""))
+        
+        }
+        
     }
     if(ChatId){
       keySet();
@@ -20,12 +27,43 @@ const Message = ({ user,  message, freindphoto,ChatId }) => {
 
 },[user])
 
+useEffect(()=>{
+  const loadmsg = ()=>{
+    if(message.SenderId == user.uid ){
+      const plaintxt =  decryptAES(message.Text,keys.key, keys.iv)
+      setMsg(plaintxt)
+    
+    }
+    else{
+      const plaintxt = decryptAES(message.Text,keys.frnd_key, keys.frnd_iv)
+      setMsg(plaintxt)
+    }
+  }
+  keys&&loadmsg()
+ 
+},[keys])
   const scrollToBottom = () => {
     const chatBox = document.getElementById('messagescroll');
     if (chatBox) {
     chatBox.scrollTop = chatBox.scrollHeight;
     }
   };
+// const newmsg  = async ()=>{
+//   try{
+//     await exchangeKey(user.uid, ChatId.replace(user.uid, ""))
+//     const chatkey = await inDB.chatCred.where("chatId").equals(ChatId).first()
+//     setMyRSA(prestate=>{return chatkey}) 
+//     return decryptAES(message.Text,chatkey.frnd_key, keys.frnd_iv)
+//   }
+//   catch(er){
+//     console.log(err)
+//     alert("An error occured please refresh your browser")
+//   }
+  
+
+
+// }
+
   return (
 
     // <div
@@ -64,7 +102,7 @@ const Message = ({ user,  message, freindphoto,ChatId }) => {
                     <p>{message.size}</p>
                 </div>
             </div></a>
-            : <p class={`bg-blue-600  p-2 text-xl  rounded-b-xl ${message.SenderId === user.uid ? "rounded-l-xl":"rounded-r-xl"}  `}> {keys?message.SenderId === user.uid  ? decryptAES(message.Text,keys.key, keys.iv):decryptAES(message.Text,keys.frnd_key, keys.frnd_iv):"" }  </p>
+            : <p class={`bg-blue-600  p-2 text-xl  rounded-b-xl ${message.SenderId === user.uid ? "rounded-l-xl":"rounded-r-xl"}  `}> {msg }  </p>
 
             }
            

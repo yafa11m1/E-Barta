@@ -19,7 +19,7 @@ export const decryptAES = (ciphertext, key, iv) => {
     return decipher.output.toString('utf-8');
   }
   catch(err){
-    return "Faild to decrypt"
+    return "Faild to decrypt Please! Refresh"
   }
     
 };
