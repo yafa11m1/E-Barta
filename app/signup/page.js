@@ -33,7 +33,7 @@ const Signup = () => {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const newErrors = {};
 
@@ -68,13 +68,13 @@ const Signup = () => {
 
         if (Object.keys(newErrors).length === 0) {
             // Form is valid, you can submit the data or perform additional actions here
-            console.log('Form data:', formData);
-            registerWithEmailAndPassword(formData.email,formData.password,formData.gender,formData.phone,formData.fullname);
-            router.push( "/dashboard", undefined, { shallow: true });
+            // console.log('Form data:', formData);
+            const stat = await registerWithEmailAndPassword(formData.email,formData.password,formData.gender,formData.phone,formData.fullname);
+            stat&&router.push( "/dashboard", undefined, { shallow: true });
         }
     };
-    const handleSignWithGoogle = ()=> {
-        signInWithGoogle();
+    const handleSignWithGoogle = async ()=> {
+        await signInWithGoogle();
         if(user){
             router.push( "/dashboard", undefined, { shallow: true });
             

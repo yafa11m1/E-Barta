@@ -20,9 +20,7 @@ import {
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
-import { useState } from "react";
 
-let status ="";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBH-jWsHIz2sAm1DkxRYo6cXwKu_245dTU",
@@ -77,7 +75,7 @@ const logInWithEmailAndPassword = async (email, password) => {
     await signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed up 
-      console.log(userCredential)
+      // console.log(userCredential)
       storeAuthToken();
       return true
       // ...
@@ -85,6 +83,8 @@ const logInWithEmailAndPassword = async (email, password) => {
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
+      console.log(error);
+      alert(errorMessage);
       return false;
       // ..
     });;
@@ -96,17 +96,19 @@ const logInWithEmailAndPassword = async (email, password) => {
   } catch (err) {
     console.error(err);
     //alert(err.message);
-    status = "Email or password is incorrect ";
+    // status = "Email or password is incorrect ";
+
     return false;
     
   }
 };
 
 const registerWithEmailAndPassword = async (email, password,gender,phone, fullname) => {
-  console.log(email, password,gender,phone, fullname);
+  // console.log(email, password,gender,phone, fullname);
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
+    console.log(user)
     await setDoc(doc(db, "users",user.uid), {
       Uid:user.uid,
       Fullname:fullname,
@@ -159,7 +161,6 @@ export {
   registerWithEmailAndPassword,
   sendPasswordReset,
   logout,
-  status,
   isLoggedIn,
   storage,
 };
