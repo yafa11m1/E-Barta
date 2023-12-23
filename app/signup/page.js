@@ -83,7 +83,7 @@ const Signup = () => {
         
     }
     if(user){
-        setLoggedin(true);
+        
         return router.push( "/dashboard", undefined, { shallow: true });
 
     }
