@@ -71,9 +71,14 @@ const Input = ({ user, ChatId }) => {
               date: Timestamp.now(),
               file: downloadURL,
               type: img.type,
-              size: img.size,
-              Text:encText
+              size: img.size
             }),
+            LastMsg:{
+              Id: uuid(),
+              Text:encText,
+              SenderId: user.uid,
+              Date: Timestamp.now(),
+          }
           });
         });
       });

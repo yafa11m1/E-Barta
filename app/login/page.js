@@ -14,7 +14,7 @@ const Login = () => {
         setFormData({ ...formData, [name]: value });
     };
     const router = useRouter();
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const newErrors = {};
 
@@ -33,11 +33,9 @@ const Login = () => {
 
         if (Object.keys(newErrors).length === 0) {
             // Form is valid, you can submit the data or perform additional actions here
-            console.log('Form data:', formData);
-            logInWithEmailAndPassword(formData.email,formData.password).then((r)=>{
-                r?router.push( "/dashboard", undefined, { shallow: true }):alert("Email or password is incorrect")
-            });
-           
+            // console.log('Form data:', formData);
+            const stat = await logInWithEmailAndPassword(formData.email,formData.password)
+            stat&&router.push( "/dashboard", undefined, { shallow: true })
             
             
         }
