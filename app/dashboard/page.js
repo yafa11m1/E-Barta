@@ -9,6 +9,7 @@ import { updateInfoRSA } from '../firedb';
 import UnauthorizedAccessPage from '../components/unauthorized';
 import { inDB } from '../inDB';
 import Spinner from '../components/Spinner';
+import Users from '../users/users';
 
 const Page = () => {
     const [activeChat, setactiveChat] = useState(null);
@@ -16,6 +17,7 @@ const Page = () => {
     const [User, setUser] = useState(user)
     const [myRsa, setMyRSA] = useState(null)
     const [loading, isloading] = useState(true);
+    const [ userlist, setuserlist] = useState(false);
     useEffect(() => {
         const checkAuthentication = async () => {
           await new Promise((resolve) => setTimeout(resolve, 1500));
@@ -52,6 +54,7 @@ const Page = () => {
     useEffect(()=>{
         if(User){
             checkRSA();
+            console.log(userlist);
         }       
 
     },[User])
@@ -92,10 +95,14 @@ const Page = () => {
 
     return (
         
-            !loading?user?( <div class="grid grid-cols-12  h-screen ">
-            <Header myRsa={myRsa} user={User}/>
+            !loading?user? !userlist?( <div class="grid grid-cols-12  h-screen ">
+            <Header myRsa={myRsa} setuserlist={setuserlist} user={User}/>
             <Chatlist myRsa={myRsa} user={User}setactive={setactiveChat}/>
             <Chatbox myRsa={myRsa} user={User} uid = {activeChat}/>
+            
+        </div>):(<div class="grid grid-cols-12  h-screen ">
+            <Header myRsa={myRsa} setuserlist={setuserlist} user={User}/>
+            <Users myRsa={myRsa} user={User} setactive={setactiveChat}/>
             
         </div>):(<UnauthorizedAccessPage/>):(<Spinner/>)
         

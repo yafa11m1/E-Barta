@@ -135,7 +135,17 @@ const updateInfoRSA = async (uid) => {
         
     }
 }
-
+const getAllUsers = async () => {
+    const usersCollection = collection(db, 'users');
+    const usersSnapshot = await getDocs(usersCollection);
+  
+    const users = [];
+    usersSnapshot.forEach((doc) => {
+      users.push({ id: doc.id, ...doc.data() });
+    });
+    
+    return users;
+  };
 const SendTxt = async (ChatId,text,uid)=>{
     console.log(ChatId,text,uid)
     try{
@@ -449,4 +459,5 @@ export {
  updatePubkey,
  updateRSAkey,
  updateInfoRSA,
+ getAllUsers,
 };

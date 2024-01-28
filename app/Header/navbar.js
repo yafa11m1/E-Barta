@@ -16,7 +16,7 @@ import people from '../img/people.png';
 import dark from '../img/dark-mode.png';
 import settings from "../img/setting.png";
 
-const Header = () => {
+const Header = ({setuserlist}) => {
     const {auth, logout, setLoggedin, placeholderurl} = UserAuth();
     const user = auth.currentUser;
     // console.log(user,"from nav");
@@ -33,7 +33,7 @@ const Header = () => {
         
     };
    
- 
+        
     // user && console.log(user);
 
     return (
@@ -59,7 +59,7 @@ const Header = () => {
         
 
         <div className="  grid  items-center sm:justify-items-center">
-            <a href="#">
+            <a href="#" onClick={()=> setuserlist(prevestate=>{return true})}>
                 <Image src={people}alt="" className="w-8 h-8 hover:bg-gray-200 rounded-md"/>
             </a>
         </div>
