@@ -9,7 +9,6 @@ import { updateInfoRSA } from '../firedb';
 import UnauthorizedAccessPage from '../components/unauthorized';
 import { inDB } from '../inDB';
 import Spinner from '../components/Spinner';
-import Users from '../users/users';
 import Userlist from '../components/userlist';
 
 const Page = ({is}) => {
@@ -55,7 +54,7 @@ const Page = ({is}) => {
     useEffect(()=>{
         if(User){
             checkRSA();
-            console.log(userlist);
+            // console.log(userlist);
         }       
 
     },[User])
