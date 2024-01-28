@@ -141,7 +141,7 @@ const getAllUsers = async () => {
   
     const users = [];
     usersSnapshot.forEach((doc) => {
-      users.push({ id: doc.id, ...doc.data() });
+      users.push({ id: doc.id, Fullname:doc.data().Fullname, Email:doc.data().Email, PhotoUrl: doc.data().PhotoUrl  });
     });
     
     return users;

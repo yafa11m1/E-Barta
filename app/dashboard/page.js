@@ -10,8 +10,9 @@ import UnauthorizedAccessPage from '../components/unauthorized';
 import { inDB } from '../inDB';
 import Spinner from '../components/Spinner';
 import Users from '../users/users';
+import Userlist from '../components/userlist';
 
-const Page = () => {
+const Page = ({is}) => {
     const [activeChat, setactiveChat] = useState(null);
     const { user } = UserAuth();
     const [User, setUser] = useState(user)
@@ -64,7 +65,7 @@ const Page = () => {
     //     if(user){
     //         const rsakey = await inDB.userCred.where("uid").equals(user.uid).first()
     //         console.log(rsakey)
-    //         if(!rsakey.n){
+    //         if(!rsakey.nChatbox){
     //             user&&updateInfoRSA(user.uid);
                 
     //         }
@@ -102,7 +103,8 @@ const Page = () => {
             
         </div>):(<div class="grid grid-cols-12  h-screen ">
             <Header myRsa={myRsa} setuserlist={setuserlist} user={User}/>
-            <Users myRsa={myRsa} user={User} setactive={setactiveChat}/>
+            <Userlist myRsa={myRsa} user={User} setactive={setactiveChat}/>
+            <Chatbox myRsa={myRsa} user={User} uid = {activeChat}/>
             
         </div>):(<UnauthorizedAccessPage/>):(<Spinner/>)
         

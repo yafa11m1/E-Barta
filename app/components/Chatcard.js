@@ -48,41 +48,42 @@ const ChatCard = ({ user, Uid, chatId, onclk }) => {
 
     });
   }, [Uid]);
-  useEffect(async () => {
-    userInfo(Uid).then((r) => {
-      setInfo(prevState=>{ return r});
-      // console.log(info);
-    }
+  useEffect( () => {
+    const infoandexchange = async()=>{
+          userInfo(Uid).then((r) => {
+            setInfo(prevState=>{ return r});
+            // console.log(info);
+          }
 
 
 
-    )
-    await exchangeKey(chatId.replace(Uid, ""), Uid)
-    //   .then(()=>{
-    //     inDB.chatCred.where("chatId").equals(chatId).first().then((y)=>{
-    //       // setkeys(y);
-    //     })
-    // })
-    const keys = await inDB.chatCred.where("chatId").equals(chatId).first();
-    Uid && GetLastMsg(chatId).then((r) => {
-      keys && setlastmsg(prevState=>{ return  {
-        Text: r.SenderId != Uid ? decryptAES(r.Text, keys.key, keys.iv) : decryptAES(r.Text, keys.frnd_key, keys.frnd_iv),
-        Date: r.Date.toDate().toLocaleString() == today ? r.Date.toDate().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
-          : r.Date.toDate().toLocaleDateString()
-      }})
-      // console.log(LastMsg);
+          )
+          await exchangeKey(chatId.replace(Uid, ""), Uid)
+          //   .then(()=>{
+          //     inDB.chatCred.where("chatId").equals(chatId).first().then((y)=>{
+          //       // setkeys(y);
+          //     })
+          // })
+          const keys = await inDB.chatCred.where("chatId").equals(chatId).first();
+          Uid && GetLastMsg(chatId).then((r) => {
+            keys && setlastmsg(prevState=>{ return  {
+              Text: r.SenderId != Uid ? decryptAES(r.Text, keys.key, keys.iv) : decryptAES(r.Text, keys.frnd_key, keys.frnd_iv),
+              Date: r.Date.toDate().toLocaleString() == today ? r.Date.toDate().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+                : r.Date.toDate().toLocaleDateString()
+            }})
+            // console.log(LastMsg);
 
-    })
-    
+          })
+      }
 
-
+      infoandexchange()
     // )
 
   }, [Uid])
   const today = Timestamp.now().toDate().toLocaleDateString();
-  useEffect(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 5000));
-    const keys = await inDB.chatCred.where("chatId").equals(chatId).first();
+  useEffect( () => {
+    
+    const keys =  inDB.chatCred.where("chatId").equals(chatId).first();
     const unSub = onSnapshot(doc(db, "chats", chatId), (r) => {
       keys && r.exists() && setlastmsg(prevState=>{ return {
         Text: r.data().LastMsg.SenderId != Uid ? decryptAES(r.data().LastMsg.Text, keys.key, keys.iv) : decryptAES(r.data().LastMsg.Text, keys.frnd_key, keys.frnd_iv),

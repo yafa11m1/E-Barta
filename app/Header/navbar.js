@@ -14,7 +14,7 @@ import profile from '../img/profile.jpg';
 import chat from '../img/chats.png';
 import people from '../img/people.png';
 import dark from '../img/dark-mode.png';
-import settings from "../img/setting.png";
+import chats from "../img/chat.png";
 
 const Header = ({setuserlist}) => {
     const {auth, logout, setLoggedin, placeholderurl} = UserAuth();
@@ -56,7 +56,11 @@ const Header = ({setuserlist}) => {
                     className="rounded-full w-12 h-12 hover:ring-offset-2 hover:ring-2 "/></a>
         </div>
 
-        
+        <div className=" grid items-center   sm:justify-items-center">
+            <a href="#" onClick={()=> setuserlist(prevestate=>{return false})}>
+                <Image src={chats} alt="" className="w-8 h-8 hover:bg-gray-200 rounded-md"/>
+            </a>
+        </div>
 
         <div className="  grid  items-center sm:justify-items-center">
             <a href="#" onClick={()=> setuserlist(prevestate=>{return true})}>
@@ -92,11 +96,7 @@ const Header = ({setuserlist}) => {
 
         
 
-        <div className=" grid items-center   sm:justify-items-center">
-            <a href="/">
-                <Image src={settings} alt="" className="w-8 h-8 hover:bg-gray-200 rounded-md"/>
-            </a>
-        </div>
+        
 
         <hr/> 
         
