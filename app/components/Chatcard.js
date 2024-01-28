@@ -1,9 +1,7 @@
 'use client'
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { GetLastMsg, exchangeKey, userInfo } from '../firedb';
 import { UserAuth } from '../Context/AuthContext';
-import threedot from '../img/threedot.png';
 import { Timestamp, doc, onSnapshot } from 'firebase/firestore';
 import { decryptAES } from '../aes';
 import { db } from '../firebase';
@@ -83,8 +81,9 @@ const ChatCard = ({ user, Uid, chatId, onclk }) => {
   const today = Timestamp.now().toDate().toLocaleDateString();
   useEffect( () => {
     
-    const keys =  inDB.chatCred.where("chatId").equals(chatId).first();
-    const unSub = onSnapshot(doc(db, "chats", chatId), (r) => {
+    
+    const unSub = onSnapshot(doc(db, "chats", chatId), async (r) => {
+      const keys = await  inDB.chatCred.where("chatId").equals(chatId).first();
       keys && r.exists() && setlastmsg(prevState=>{ return {
         Text: r.data().LastMsg.SenderId != Uid ? decryptAES(r.data().LastMsg.Text, keys.key, keys.iv) : decryptAES(r.data().LastMsg.Text, keys.frnd_key, keys.frnd_iv),
         Date: r.data().LastMsg.Date.toDate().toLocaleString() == today ? r.data().LastMsg.Date.toDate().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })

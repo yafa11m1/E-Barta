@@ -2,8 +2,8 @@
 
 import Image from 'next/image'
 import { useState } from 'react'
-import Login from './login/page';
-import Signup from './signup/page';
+import Login from '../login/page';
+import Signup from '../signup/page';
 
 
 
@@ -149,4 +149,4 @@ export default function Home() {
 
     </main>
   )
-};
+}

@@ -5,7 +5,7 @@ import { logInWithEmailAndPassword, signInWithGoogle } from '../firebase';
 import { UserAuth } from '../Context/AuthContext';
 import { useRouter } from 'next/navigation'
 
-const Login = () => {
+const Login = ({onClk}) => {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [errors, setErrors] = useState({});
     const { user } = UserAuth();
@@ -56,7 +56,7 @@ const Login = () => {
     }},[user])
   
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="flex items-center justify-center">
             <div className="bg-white p-8 rounded-lg shadow-md w-96">
                 <h1 className="text-2xl font-semibold mb-4">Log In to E-Barta</h1>
                 <form onSubmit={handleSubmit}>
@@ -95,7 +95,7 @@ const Login = () => {
                 </button>
                 </div>
                 <div className="mt-4 text-gray-600 text-sm text-center">
-                    Dont have an account? <a href="/signup" className="text-blue-500 hover:underline">Sign up</a>
+                    Dont have an account? <a href="#" onClick={onClk} className="text-blue-500 hover:underline">Sign up</a>
                 </div>
             </div>
         </div>

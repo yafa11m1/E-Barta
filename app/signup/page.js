@@ -8,7 +8,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 
 
-const Signup = () => {
+const Signup = ({onClk}) => {
     const {auth, registerWithEmailAndPassword, signInWithGoogle,  } = UserAuth();
     const [user] = useAuthState(auth);
 
@@ -89,7 +89,7 @@ const Signup = () => {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className=" flex items-center justify-center bg-gray-100">
             <div className="bg-white p-8 rounded-lg shadow-md w-96">
                 <h1 className="text-2xl font-semibold mb-4">Sign Up for E-Barta</h1>
                 <form onSubmit={handleSubmit}>
@@ -186,7 +186,7 @@ const Signup = () => {
                 </div>
 
                 <div className="mt-4 text-gray-600 text-sm text-center">
-                    Already have an account? <a href="#" className="text-blue-500 hover:underline">Log in</a>
+                    Already have an account? <a href="#" onClick={onClk} className="text-blue-500 hover:underline">Log in</a>
                 </div>
 
             </div>
