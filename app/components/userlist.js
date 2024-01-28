@@ -80,7 +80,7 @@ const Userlist = ({ myRsa,user, setactive }) => {
                                        user = {u}
                                        Uid = {u.id}
                                        myUid={user.uid}
-                                       
+                                       key={u.id}
                                         onclk = {()=>setactive(prevState=>{ return u.id})}
                                         
                                     />
