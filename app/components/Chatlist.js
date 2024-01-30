@@ -17,41 +17,41 @@ import { db } from "../firebase";
 
 
 const Chatlist = ({ myRsa,user, setactive }) => {
-    const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
 
-    useEffect(() => {
-        const checkAuthentication = async () => {
-          await new Promise((resolve) => setTimeout(resolve, 500));
-          setLoading(prevState=>{ return false});
+  useEffect(() => {
+      const checkAuthentication = async () => {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        setLoading(prevState=>{ return false});
+        
+      };
+      checkAuthentication();
+    }, [user]);
+  
+  const [ChatLst , setChatLst] = useState([]);
+  // useEffect(()=>{
+  //     const updatelist = async () => {
+  //          const res = await ChatList(user?user.uid:"");
+  //          setChatLst(res);
+  //         //  
           
-        };
-        checkAuthentication();
-      }, [user]);
-    
-    const [ChatLst , setChatLst] = useState([]);
-    // useEffect(()=>{
-    //     const updatelist = async () => {
-    //          const res = await ChatList(user?user.uid:"");
-    //          setChatLst(res);
-    //         //  console.log(res);
-            
-    //       };
-    //       updatelist();
-    
-    //   },[user])
-    useEffect(() => {
-        const unSub = onSnapshot(doc(db, 'users', user&&user.uid||'a' ), (doc) => {
-          doc.exists() && setChatLst(prevState=>{ return doc.data().Chats});
-        });
-    
-        return () => {
-          unSub();
-        };
-      }, [user]);
+  //       };
+  //       updatelist();
+  
+  //   },[user])
+  useEffect(() => {
+      const unSub = onSnapshot(doc(db, 'users', user&&user.uid||'a' ), (doc) => {
+        doc.exists() && setChatLst(prevState=>{ return doc.data().Chats});
+      });
+  
+      return () => {
+        unSub();
+      };
+    }, [user]);
   return (
     
-    <div id="second" class="xl:col-span-3 lg:col-span-4 md:col-span-1 sm:col-span-2 col-span-2 h-screen  border-r-2  bg-gray-50 ">
+    <div id="second" class="xl:col-span-3 lg:col-span-4 md:col-span-2 sm:col-span-3 col-span-3 h-screen  border-r-2  bg-gray-50 ">
                  <div class="p-2 ">
                     <div class=" lg:flex lg:justify-between  ">
                         <strong class="text-2xl">CHATS</strong>

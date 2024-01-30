@@ -68,7 +68,7 @@ const Signup = ({onClk}) => {
 
         if (Object.keys(newErrors).length === 0) {
             // Form is valid, you can submit the data or perform additional actions here
-            // console.log('Form data:', formData);
+            // 
             const stat = await registerWithEmailAndPassword(formData.email,formData.password,formData.gender,formData.phone,formData.fullname);
             stat&&router.push( "/dashboard", undefined, { shallow: true });
         }

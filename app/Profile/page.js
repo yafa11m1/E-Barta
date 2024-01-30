@@ -22,7 +22,7 @@ const Page = () => {
     
 
 
-    console.log(uid);
+    
     const [formData, setFormData] = useState({
         name: '',
         phone: '',
@@ -38,7 +38,7 @@ const Page = () => {
     };
 
 
-    // console.log(user);
+    // 
     const defaultFullName = 'John Doe';
     const defaultPhone = '123-456-7890';
     const defaultGender = 'Male';
@@ -58,7 +58,7 @@ const Page = () => {
                 photourl: info.PhotoUrl,
             })
             setSelectedImage(info.PhotoUrl);
-            console.log(user);
+            
 
 
         };
@@ -66,13 +66,13 @@ const Page = () => {
 
 
     }, [user]);
-    // console.log(detail);
+    // 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const { name, phone, gender,profileimage } = formData;
-        // console.log(profileimage)
+        // 
 
 
         // Regular expressions for validation
@@ -104,7 +104,7 @@ const Page = () => {
             formData.profileimage? uploadBytesResumable(storageRef, formData.profileimage).then(() => {
                 getDownloadURL(storageRef).then(async (downloadURL) => {
                     try{
-                        // console.log(downloadURL);
+                        // 
                         setFormData({ ...formData, photourl: downloadURL });
                         updateProfile(user, {
                             displayName: formData.name,
@@ -121,11 +121,11 @@ const Page = () => {
                         }).catch((error) => {
                             // An error occurred
                             // ...
-                            console.log(error)
+                            
                         });
                     }
                     catch(err){
-                        console.log(err);
+                        
                     }
                     
                 
@@ -144,13 +144,13 @@ const Page = () => {
             }).catch((error) => {
                 // An error occurred
                 // ...
-                console.log(error)
+                
             });
 
             
         } else {
             // Validation errors detected, display errors or handle them accordingly
-            console.log("Validation errors:", errors);
+            
         }
     };
     const handleImageUpload = (event) => {

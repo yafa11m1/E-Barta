@@ -25,11 +25,11 @@ const UserSearch = ({setactive}) => {
     const { name, value } = e.target;
     // setFormData({ ...formData, [name]: value });
     // Check if the Enter key was pressed (keyCode 13)
-    console.log(e.key);
+    
   if (e.key === 'Enter') {
     // Handle Enter key press if needed
     // For example, you can submit a form or perform a specific action
-    console.log('Enter key pressed!');
+    
   } else {
     // If Enter key was not pressed, update the form data
     setFormData(prevState=>{ return { ...formData, [name]: value }});
@@ -55,14 +55,14 @@ const UserSearch = ({setactive}) => {
   
       querySnapshot.forEach((doc) => {
         results.push(doc.data());
-        console.log(doc);
+        
       });
   
       setSearchResults(results);
       setIsDropdownOpen(true);
     }
     catch(err){
-      console.log(err)
+      
     }
     
   };
@@ -75,13 +75,13 @@ const UserSearch = ({setactive}) => {
   const handleAdd = async (FriendUid) => {
     
     try{
-      console.log(user.uid,FriendUid);
+      
       const res =   await addFriend(user.uid,FriendUid);
       alert(res);
 
     }
     catch(err){
-      console.log(err)
+      
 
     }
   };

@@ -1,7 +1,9 @@
 'use client'
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { GetLastMsg, exchangeKey, userInfo } from '../firedb';
 import { UserAuth } from '../Context/AuthContext';
+import threedot from '../img/threedot.png';
 import { Timestamp, doc, onSnapshot } from 'firebase/firestore';
 import { decryptAES } from '../aes';
 import { db } from '../firebase';
@@ -50,7 +52,7 @@ const ChatCard = ({ user, Uid, chatId, onclk }) => {
     const infoandexchange = async()=>{
           userInfo(Uid).then((r) => {
             setInfo(prevState=>{ return r});
-            // console.log(info);
+            // 
           }
 
 
@@ -69,7 +71,7 @@ const ChatCard = ({ user, Uid, chatId, onclk }) => {
               Date: r.Date.toDate().toLocaleString() == today ? r.Date.toDate().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
                 : r.Date.toDate().toLocaleDateString()
             }})
-            // console.log(LastMsg);
+            // 
 
           })
       }
@@ -97,9 +99,10 @@ const ChatCard = ({ user, Uid, chatId, onclk }) => {
 
     };
   }, []);
-  // console.log(info, Uid);
+  // 
 
-  // console.log(today);
+  // 
+
 
 
   return (
@@ -122,9 +125,9 @@ const ChatCard = ({ user, Uid, chatId, onclk }) => {
     // </Link>
     // <div onClick={onclk} class="p-2 m-2 w-16  cursor-pointer  rounded-lg shadow-lg transition transform hover:scale-105 hover:shadow-xl rounded-md  lg:w-80  lg:flex">
 
-    <div onClick={onclk} class="p-2 m-2 w-16  cursor-pointer  rounded-lg shadow-lg transition  hover:scale-105 hover:shadow-xl   lg:w-80  lg:flex">
+    <div onClick={onclk} class="p-2 m-2    cursor-pointer  rounded-lg shadow-lg transition  hover:scale-105 hover:shadow-xl   lg:w-80  lg:flex ">
 
-      <div class="lg:flex lg:justify-items-center w-32 " >
+      <div class="lg:flex lg:justify-items-center w-16 lg:w-32 " >
         <a href="#"> <img src={info ? info.PhotoUrl : placeholderurl} alt="" class="rounded-full w-16 h-16 " /></a>
       </div>
 

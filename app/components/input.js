@@ -4,6 +4,8 @@ import Image from "next/image";
 import Fire from '../img/fire.svg';
 import attachfile from '../img/attachfile.png';
 import sendbutton from '../img/send-48.png';
+import close from '../img/close.png';
+import attach from '../img/attachfile.png';
 import {
   arrayUnion,
   doc,
@@ -43,7 +45,7 @@ const Input = ({ user, ChatId }) => {
     const keySet = async()=> {
       
       const chatkey = await inDB.chatCred.where("chatId").equals(ChatId).first();
-        console.log(chatkey)
+        
         setMyRSA(prevState=>{ return chatkey}) 
     }
     if(ChatId){
@@ -82,7 +84,7 @@ const Input = ({ user, ChatId }) => {
           });
         });
       });
-
+     
       // uploadTask.on(
       //   (error) => {
       //     //TODO:Handle Error
@@ -102,7 +104,7 @@ const Input = ({ user, ChatId }) => {
       //   }
       // );
     } else {
-      console.log("keys from input",keys)
+      
       const encText = encryptAES(text,keys.key, keys.iv)
       const res = await SendTxt(ChatId, encText, user.uid);
       // res?alert("sent"):alert("error");
@@ -125,11 +127,22 @@ const Input = ({ user, ChatId }) => {
     setText("");
     setImg(prevState=>{ return null});
   };
+  const bytesToMB = (bytes) => {
+    const megabytes = bytes / (1024 * 1024);
+    return megabytes.toFixed(2); // Rounds to two decimal places
+  };
+  const bytesToKB = (bytes) => {
+    const megabytes = bytes / (1024);
+    return megabytes.toFixed(2); // Rounds to two decimal places
+  };
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       handleSend();
     }
   };
+  const clearfile = ()=>{
+    setImg(prevState=>{ return null});
+  }
   return (
     // <div className="input">
     //   <input
@@ -152,13 +165,37 @@ const Input = ({ user, ChatId }) => {
     //     <button onClick={handleSend}>Send</button>
     //   </div>
     // </div>
-    !loading?
+    !loading?<>
+     {img?img.type.includes("image")?<div class=" flex relative  sm:mx-20 mx-20 ">
+                        
+                        <Image src={img.preview} alt=""  width={100} height={50} class=" mx-2 rounded w-14 h-16  "/>
+                        <div class=" absolute top-0 left-0">
+                           <a onClick={clearfile}>
+                               <Image  src={close} alt="" class="  rounded-full w-6 cursor-pointer "/>
+                           </a>
+                       </div>
+                        
+    </div>:<div class=" flex relative  sm:mx-20 mx-20 ">
+                        <div class=" flex bg-gray-200 rounded-lg p-2 ">
+                            <a href="#"> <Image src={attach} alt="" class="rounded-full w-10 h-10 mr-2 "/></a>
+                            <div class="">
+                                <h1 class="text-lg">{img.name}</h1>
+                                <p>{img.size>(1024*1024)?`${bytesToMB(img.size)}} MB`:`${bytesToKB(img.size)} KB`}</p>
+                            </div>
+                        </div>
+                        <div class=" absolute top-0 left-0">
+                        <a onClick={clearfile}>
+                               <Image  src={close} alt="" class="  rounded-full w-6 cursor-pointer "/>
+                           </a>
+                       </div>
+                        
+                   </div>:<></> }
     <div class="m-4 flex items-center ">
       <a href="#"> <Image src={Fire} alt="" class="flex-1 rounded-full w-8 h-8 mr-2  hover:bg-gray-100" /></a>
       <input
         type="file"
         id="file"
-        onChange={(e) => setImg(prevState=>{ return {file:e.target.files[0],name:e.target.files[0].name,type:e.target.files[0].type,size:e.target.files[0].size}})}
+        onChange={(e) => setImg(prevState=>{ return {file:e.target.files[0],name:e.target.files[0].name,type:e.target.files[0].type,size:e.target.files[0].size,preview: URL.createObjectURL(e.target.files[0])}})}
         className="hidden"
       />
       <label htmlFor="file">
@@ -176,7 +213,7 @@ const Input = ({ user, ChatId }) => {
         onKeyDown={handleKeyDown}
         class="flex-1 p-3 border border-gray-300 rounded-full" />
       <a onClick={handleSend} href="#"> <Image src={sendbutton} alt="" class="flex-1 rounded-full w-12 h-14 mr-2  hover:bg-gray-100" /></a>
-    </div>:<Spinner/>
+    </div></>:<Spinner/>
   );
 };
 

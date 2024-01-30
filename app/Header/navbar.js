@@ -19,7 +19,7 @@ import chats from "../img/chat.png";
 const Header = ({setuserlist}) => {
     const {auth, logout, setLoggedin, placeholderurl} = UserAuth();
     const user = auth.currentUser;
-    // console.log(user,"from nav");
+    // 
     const router = useRouter();
     
 
@@ -28,13 +28,13 @@ const Header = ({setuserlist}) => {
 
     const handleLogout = () => {
         logout();
-        router.push( "/login", undefined, { shallow: true });
+        router.push( "/", undefined, { shallow: true });
 
         
     };
    
         
-    // user && console.log(user);
+    // user && 
 
     return (
         <>
@@ -106,44 +106,6 @@ const Header = ({setuserlist}) => {
     );
 };
 
-// const NavItem = ({ href, text, onClick }) => (
-//     <li>
-//         <Link href={href} className="text-white" onClick={onClick} prefetch={true} >
-            
-//                 {text}
-        
-//         </Link>
-//     </li>
-// );
 
-// const AuthNavItem = ({ user, onLogout }) => {
-//     const hnadleIn = () => {
-//         if (auth.currentUser) {
-//             setUser(true);
-//         }
-//         else {
-//             setUser(false);
-//         }
-
-//     }
-//     if (user) {
-//         return (
-//             <>
-//             <li>
-//                     <Usersearch/>
-//             </li>
-//             <li>
-//                 <Link href="#" className="text-white" onClick={onLogout}>
-//                     Log Out
-//                 </Link>
-//             </li>
-//             </>
-//         );
-//     }
-
-//     return (
-//         <NavItem href="/login" text="Login" onClick={hnadleIn} />
-//     );
-// };
 
 export default Header;

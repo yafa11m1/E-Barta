@@ -9,7 +9,7 @@ const UnauthorizedAccessPage = () => {
         <p className="text-gray-700 mb-4">
           You do not have permission to access this page. Please log in to continue.
         </p>
-        <Link className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" href="/login">
+        <Link className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" href="/">
           
             Go to Login
          

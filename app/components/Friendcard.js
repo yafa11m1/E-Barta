@@ -23,12 +23,12 @@ const FriendCard = ({  Uid }) => {
     useEffect(()=>{
         userInfo(Uid).then((r)=>{
             setInfo(r);
-            console.log(info);
+            
         }
 
         )
     },[Uid])
-    // console.log(info);
+    // 
 
   return (
     <Link href={`/chat/${Uid}`}>

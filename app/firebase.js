@@ -47,7 +47,7 @@ const signInWithGoogle = async () => {
     const user = res.user;
     const q = query(collection(db, "users"), where("Uid", "==", user.uid));
     const docs = await getDocs(q);
-    console.log(user,q,docs)
+    
     storeAuthToken();
     if (docs.docs.length === 0) {
       await setDoc(doc(db, "users",user.uid), {
@@ -75,7 +75,7 @@ const logInWithEmailAndPassword = async (email, password) => {
     await signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed up 
-      // console.log(userCredential)
+      // 
       storeAuthToken();
       return true
       // ...
@@ -83,7 +83,7 @@ const logInWithEmailAndPassword = async (email, password) => {
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-      console.log(error);
+      
       alert(errorMessage);
       return false;
       // ..
@@ -104,11 +104,11 @@ const logInWithEmailAndPassword = async (email, password) => {
 };
 
 const registerWithEmailAndPassword = async (email, password,gender,phone, fullname) => {
-  // console.log(email, password,gender,phone, fullname);
+  // 
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
-    console.log(user)
+    
     await setDoc(doc(db, "users",user.uid), {
       Uid:user.uid,
       Fullname:fullname,
@@ -121,7 +121,7 @@ const registerWithEmailAndPassword = async (email, password,gender,phone, fullna
     });
     
   } catch (err) {
-    console.log(err);
+    
     alert(err.message);
   }
   

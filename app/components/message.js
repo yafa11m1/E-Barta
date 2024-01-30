@@ -5,14 +5,14 @@ import { inDB } from "../inDB";
 import { exchangeKey } from "../firedb";
 
 
-const Message = ({ user,  message, freindphoto,ChatId }) => {
+const Message = ({ user, freindname,  message, freindphoto,ChatId }) => {
   const { placeholderurl} = UserAuth();
   const [keys, setMyRSA] = useState(null)
   const [msg, setMsg] = useState("Loading...")
   useEffect(()=>{
     const keySet = async()=> {
       const chatkey = await inDB.chatCred.where("chatId").equals(ChatId).first();
-        // console.log(rsakey)
+        // 
         setMyRSA(chatkey)
         if(message.SenderId != user.uid && chatkey.frnd_iv==""){
           await exchangeKey(user.uid, ChatId.replace(user.uid, ""))
@@ -56,13 +56,22 @@ useEffect(()=>{
 //     return decryptAES(message.Text,chatkey.frnd_key, keys.frnd_iv)
 //   }
 //   catch(er){
-//     console.log(err)
+//     
 //     alert("An error occured please refresh your browser")
 //   }
   
 
 
 // }
+
+const bytesToMB = (bytes) => {
+  const megabytes = bytes / (1024 * 1024);
+  return megabytes.toFixed(2); // Rounds to two decimal places
+};
+const bytesToKB = (bytes) => {
+  const megabytes = bytes / (1024);
+  return megabytes.toFixed(2); // Rounds to two decimal places
+};
 
   return (
 
@@ -90,7 +99,9 @@ useEffect(()=>{
     
   
     <div class={` ${message.SenderId === user.uid ? "justify-items-end":"justify-items-start"}   mt-3  grid  text-left text-white `}>
+        {/* <p class="text-gray-400  ml-2  mb-2 text-sm">{freindname&&message.SenderId === user.uid ?user.displayName.split(" ")[0]:freindname.split(" ")[0]}</p> */}
         <div onLoad={scrollToBottom()} class={`flex ${message.SenderId === user.uid ? "flex-row":"flex-row-reverse"}  `}>
+        <br/>
             {
               message.file?
               message.type&&message.type.includes("image")?
@@ -99,7 +110,7 @@ useEffect(()=>{
                  <img src="https://ucarecdn.com/20348574-5489-4974-970e-0b8026353cf0/Pngtreefileicon_4419863.png" alt="" class="rounded-full w-10 h-10 mr-2 "/>
                 <div class="">
                     <h1 class="text-lg text-black">{message.name}</h1>
-                    <p>{message.size}</p>
+                    <p class="text-blue">{message.size>(1024*1024)?`${bytesToMB(message.size)}} MB`:`${bytesToKB(message.size)} KB`}</p>
                 </div>
             </div></a>
             : <p class={`bg-blue-600  p-2 text-xl  rounded-b-xl ${message.SenderId === user.uid ? "rounded-l-xl":"rounded-r-xl"}  `}> {msg }  </p>

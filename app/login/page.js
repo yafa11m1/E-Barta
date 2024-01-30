@@ -33,7 +33,7 @@ const Login = ({onClk}) => {
 
         if (Object.keys(newErrors).length === 0) {
             // Form is valid, you can submit the data or perform additional actions here
-            // console.log('Form data:', formData);
+            // 
             const stat = await logInWithEmailAndPassword(formData.email,formData.password)
             stat&&router.push( "/dashboard", undefined, { shallow: true })
             

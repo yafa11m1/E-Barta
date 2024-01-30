@@ -36,7 +36,7 @@ const addUserInfotoCloudDB = async(uid, photourl, username, email,gender,phone, 
 
     }
     catch(err){
-        console.log(err);
+        
     }
 }
 
@@ -47,11 +47,11 @@ const ChatList = async (uid)=> {
         const userDocRef = doc(db, 'users', uid);
         const userDocSnapshot = await getDoc(userDocRef);
         const userData = userDocSnapshot.data();
-        // console.log(userData);
+        // 
         return userData.Chats;
     }
     catch(err){
-        console.log(err);
+        
         
     }
 
@@ -62,7 +62,7 @@ const userInfo = async (uid) => {
         const userDocRef = doc(db, 'users', uid);
         const userDocSnapshot = await getDoc(userDocRef);
         const userData = userDocSnapshot.data();
-        // console.log(userData);
+        // 
         return {
             Fullname: userData.Fullname,
             Uid: userData.Uid,
@@ -75,7 +75,7 @@ const userInfo = async (uid) => {
 
     }
     catch(err){
-        console.log(err);
+        
         
     }
 }
@@ -85,12 +85,12 @@ const GetRSAKey = async (uid) => {
         const userDocRef = doc(db, 'users', uid);
         const userDocSnapshot = await getDoc(userDocRef);
         const userData = userDocSnapshot.data();
-        // console.log(userData);
+        // 
         return userData.RSAkey;
 
     }
     catch(err){
-        console.log(err);
+        
         
     }
 }
@@ -98,7 +98,7 @@ const GetRSAKey = async (uid) => {
 const updateInfoarray = async (uid,name,gender,phone, photourl) => {
     try{
         const userDocRef = doc(db, 'users', uid);
-        console.log("update call ",[uid,name,gender,phone, photourl]);
+        
         await updateDoc(userDocRef, {
             Fullname: name,
             PhotoUrl:photourl,
@@ -110,7 +110,7 @@ const updateInfoarray = async (uid,name,gender,phone, photourl) => {
 
     }
     catch(err){
-        console.log(err);
+        
         
         
     }
@@ -119,9 +119,9 @@ const updateInfoarray = async (uid,name,gender,phone, photourl) => {
 const updateInfoRSA = async (uid) => {
     try{
         const userDocRef = doc(db, 'users', uid);
-        // console.log("update call ",[uid,name,gender,phone, photourl]);
+        // 
         const rsakey = await inDB.userCred.where("uid").equals(uid).first()
-        // console.log(rsakey, rsakey.n)
+        // 
         await updateDoc(userDocRef, {
             RSAkey:rsakey.n
 
@@ -130,7 +130,7 @@ const updateInfoRSA = async (uid) => {
 
     }
     catch(err){
-        console.log(err);
+        
         
         
     }
@@ -147,12 +147,12 @@ const getAllUsers = async () => {
     return users;
   };
 const SendTxt = async (ChatId,text,uid)=>{
-    console.log(ChatId,text,uid)
+    
     try{
-        console.log(ChatId);
+        
         const chatDocRef =doc(db, "chats", ChatId);
         const res = await getDoc(chatDocRef);
-        // console.log(res);
+        // 
         await updateDoc(chatDocRef, {
             messages: arrayUnion({
               Id: uuid(),
@@ -171,7 +171,7 @@ const SendTxt = async (ChatId,text,uid)=>{
         return true;
     }
     catch (err){
-        console.log(err)
+        
         return false;
     }
    
@@ -213,7 +213,7 @@ const updateChatsArray = async (sender, receiver, chatid) => {
         Chats: updatedChats2,
       });
   
-      console.log("updated",sender, receiver, chatid)
+      
     } catch (error) {
       console.error('Error updating Chats array:', error);
     }
@@ -224,12 +224,12 @@ const updateChatsArray = async (sender, receiver, chatid) => {
     const chatId = userUid > FriendUid ? userUid + FriendUid : FriendUid + userUid
 
     const keys2 = await inDB.chatCred.where("chatId").equals(chatId).first();
-    // console.log(keys2)
+    // 
     if(keys2&&keys2.iv!=''){
 
-        // console.log(keys);
+        // 
         const secret = keys2.iv+":"+keys2.key;
-        console.log(secret);
+        
         GetRSApubKey(chatId,FriendUid).then((Frndkey)=>{
         // Updating Encrypted Keys
         const encSecret = encryptWithPublicKeyInteger(secret,Frndkey.RSA); // ecncrypted IV and Key with Friends RSA Pub key
@@ -237,7 +237,7 @@ const updateChatsArray = async (sender, receiver, chatid) => {
         if(Frndkey.AES!=''){
             decryptWithPrivateKeyInteger(Frndkey.AES,userUid).then((frndAESKey)=>{
                 const [FiV, Fkey] = frndAESKey.split(":");
-                console.log(frndAESKey)
+                
 
                 const updatedkeys = {
                     ...keys2,
@@ -245,12 +245,12 @@ const updateChatsArray = async (sender, receiver, chatid) => {
                     frnd_key:Fkey
                 }
                 // sessionStorage.setItem(chatId,JSON.stringify(updatedkeys));
-                // console.log(updatedkeys)
+                // 
                 inDB.chatCred.put(updatedkeys)
 
             })
         }
-        // console.log("friend: ",Frndkey)
+        // 
       
         
         
@@ -273,7 +273,7 @@ const updateChatsArray = async (sender, receiver, chatid) => {
             if(Frndkey.AES!=''){
                 decryptWithPrivateKeyInteger(Frndkey.AES,userUid).then((frndAESKey)=>{
                     const [FiV, Fkey] = frndAESKey.split(":");
-                    console.log(frndAESKey)
+                    
     
                     const updatedkeys = {
                         chatId:chatId,
@@ -283,7 +283,7 @@ const updateChatsArray = async (sender, receiver, chatid) => {
                         frnd_key:Fkey
                     }
                     // sessionStorage.setItem(chatId,JSON.stringify(updatedkeys));
-                    console.log(updatedkeys)
+                    
                     inDB.chatCred.add(updatedkeys)
     
                 })
@@ -299,7 +299,7 @@ const updateChatsArray = async (sender, receiver, chatid) => {
                 })
 
             }
-            // console.log("friend: ",Frndkey)
+            // 
           
             
             
@@ -310,7 +310,7 @@ const updateChatsArray = async (sender, receiver, chatid) => {
     }
 }
   const addChat = async(userUid,FriendUid)=>{
-    // console.log(userUid,FriendUid);
+    // 
     const rsa = await GetRSAKey(FriendUid);
     const chatId = userUid > FriendUid ? userUid + FriendUid : FriendUid + userUid
     
@@ -336,13 +336,13 @@ const updateChatsArray = async (sender, receiver, chatid) => {
          await exchangeKey(userUid,FriendUid);
     }
     catch(err){
-        console.log(err);
+        
         
     }
 }
 
 const GetRSApubKey = async(chatId,FriendUid)=>{
-    console.log(chatId,FriendUid)
+    
     try{
         const chatdocRef = doc(db,'chats',chatId);
         const chatdata = await getDoc(chatdocRef);
@@ -354,13 +354,13 @@ const GetRSApubKey = async(chatId,FriendUid)=>{
         
     }
     catch(err){
-        console.log(err);
+        
         
     }
 }
 
 const updatePubkey = async(chatId,userUid,secret)=>{
-    console.log(chatId,userUid,secret)
+    
     try{
         const chatdocRef = doc(db,'chats',chatId);
         const chatdata = await getDoc(chatdocRef);
@@ -389,7 +389,7 @@ const updatePubkey = async(chatId,userUid,secret)=>{
         
     }
     catch(err){
-        console.log(err);
+        
         
     }
 }
@@ -417,24 +417,24 @@ const updateRSAkey = async(chatId,userUid)=>{
         
     }
     catch(err){
-        console.log(err);
+        
         
     }
 }
 
 const GetLastMsg = async (ChatId)=>{
-    // console.log(ChatId)
+    // 
     try{
-        // console.log(ChatId);
+        // 
         const chatDocRef =doc(db, "chats", ChatId);
         const res = await getDoc(chatDocRef);
         const data = res.data();
-        // console.log(data.LastMsg);
+        // 
         
         return data.LastMsg;
     }
     catch (err){
-        console.log(err)
+        
         return {
             Id: 'Error',
             Text:'Error ',

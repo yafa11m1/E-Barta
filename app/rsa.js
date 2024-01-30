@@ -19,7 +19,7 @@ export const encryptWithPublicKeyInteger = (plaintext, pubKey) => {
     key,
     E
   );
-  // console.log(publicKeyInstance)
+  // 
   const encrypted = publicKeyInstance.encrypt(forge.util.encodeUtf8(plaintext), 'RSA-OAEP');
 
   return forge.util.encode64(encrypted);
@@ -28,7 +28,7 @@ export const encryptWithPublicKeyInteger = (plaintext, pubKey) => {
 // Function to decrypt using RSA private key (integer format)
 export const decryptWithPrivateKeyInteger = async (ciphertext,userUid) => {
   const rsakey = await inDB.userCred.where("uid").equals(userUid).first()
-  console.log(rsakey)
+  
   const privateKeyInstance = forge.pki.setRsaPrivateKey(
     new forge.jsbn.BigInteger(rsakey.n,16),
     new forge.jsbn.BigInteger('10001', 16),
@@ -59,7 +59,7 @@ export const generateRandomValue = () => {
 export const getKeyInteger = (ID) => {
     // Generate RSA key pair with 512-bit prime
     const keyPair = forge.pki.rsa.generateKeyPair({ bits: 1024 });
-    console.log(keyPair)
+    
 
    // Convert public key to integer
   const publicKey = keyPair.publicKey.n.toString(16)
@@ -94,7 +94,7 @@ export const getKeyInteger = (ID) => {
 
 
 
-    console.log(publicKey, privateKey)
+    
   return {pub:publicKey,priv:privateKey};
 };
 

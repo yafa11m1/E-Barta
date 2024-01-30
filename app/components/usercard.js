@@ -44,7 +44,7 @@ const UserCard = ({ user, Uid,myUid, onclk }) => {
 //   useEffect(async () => {
 //     userInfo(Uid).then((r) => {
 //       setInfo(prevState=>{ return r});
-//       // console.log(info);
+//       // 
 //     }
 
 

@@ -5,13 +5,13 @@ import Message from "./message";
 import { inDB } from "../inDB";
 
 
-const Messages = ({user,ChatId, freindphoto}) => {
+const Messages = ({user,ChatId,freindname, freindphoto}) => {
   const [messages, setMessages] = useState([]);
   const [chatKeys, setMyRSA] = useState(null)
   useEffect(()=>{
     const keySet = async()=> {
       const chatkey = await inDB.chatCred.where("chatId").equals(ChatId).first();
-        // console.log(rsakey)
+        // 
         setMyRSA(chatkey) 
     }
     if(ChatId){
@@ -20,7 +20,7 @@ const Messages = ({user,ChatId, freindphoto}) => {
     
 
 },[user])
-  // console.log(ChatId);
+  // 
   useEffect(() => {
     const unSub = onSnapshot(doc(db, "chats", ChatId ), (doc) => {
       doc.exists() && setMessages(doc.data().messages);
@@ -31,12 +31,12 @@ const Messages = ({user,ChatId, freindphoto}) => {
     };
   }, [ChatId]);
 
-  // console.log(messages)
-
+  // 
+  
   return (
     <div className="messages">
       {messages.map((m) => (
-        <Message user={user} keys={chatKeys}freindphoto={freindphoto} ChatId={ChatId} message={m} key={m.id} />
+        <Message user={user} freindname={freindname} keys={chatKeys}freindphoto={freindphoto} ChatId={ChatId} message={m} key={m.id} />
       ))}
     </div>
   );

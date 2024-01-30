@@ -5,7 +5,7 @@ export const encryptAES = (text, key, iv) => {
     cipher.start({ iv: forge.util.hexToBytes(iv) });
     cipher.update(forge.util.createBuffer(text, 'utf-8'));
     cipher.finish();
-    console.log(text, key, iv)
+    
     return cipher.output.toHex();
   };
 
@@ -15,7 +15,7 @@ export const decryptAES = (ciphertext, key, iv) => {
     decipher.start({ iv: forge.util.hexToBytes(iv) });
     decipher.update(forge.util.createBuffer(forge.util.hexToBytes(ciphertext)));
     decipher.finish();
-    console.log(decipher)
+    
     return decipher.output.toString('utf-8');
   }
   catch(err){

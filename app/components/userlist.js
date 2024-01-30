@@ -23,7 +23,7 @@ const Userlist = ({ myRsa,user, setactive }) => {
           
         };
         checkAuthentication();
-        console.log(user.uid)
+        
       }, [user]);
     
     const [UserList , setUserList] = useState([]);
@@ -31,7 +31,7 @@ const Userlist = ({ myRsa,user, setactive }) => {
     //     const updatelist = async () => {
     //          const res = await ChatList(user?user.uid:"");
     //          setUserList(res);
-    //         //  console.log(res);
+    //         //  
             
     //       };
     //       updatelist();

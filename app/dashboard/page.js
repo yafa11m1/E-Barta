@@ -34,11 +34,11 @@ const Page = ({is}) => {
         setUser(prevState=>{ return user})
 
     },[user])
-    // console.log(user)
-    // console.log(User)
+    // 
+    // 
     const checkRSA = async ()=>{
         const rsakey = await inDB.userCred.where("uid").equals(user.uid).first()
-        // console.log(rsakey)
+        // 
         setMyRSA(prevState=>{ return rsakey})
         if(!rsakey){
             const keys =  getKeyInteger(user.uid);
@@ -54,16 +54,16 @@ const Page = ({is}) => {
     useEffect(()=>{
         if(User){
             checkRSA();
-            // console.log(userlist);
+            // 
         }       
 
     },[User])
 
-    // console.log(myRsa)
+    // 
     // useEffect(async ()=>{
     //     if(user){
     //         const rsakey = await inDB.userCred.where("uid").equals(user.uid).first()
-    //         console.log(rsakey)
+    //         
     //         if(!rsakey.nChatbox){
     //             user&&updateInfoRSA(user.uid);
                 
@@ -75,7 +75,7 @@ const Page = ({is}) => {
         // Code to run when activeChat changes
         // For example, you can update some state or perform an action here
         // In this case, let's just log the change for demonstration purposes
-        // console.log('Active chat changed:', activeChat);
+        // 
     // }, [activeChat]);
 
     //RSA key initialization for exchanging Key and IV of AES
