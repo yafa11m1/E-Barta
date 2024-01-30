@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 import Usersearch from '../components/usersearch';
 import { arrayUnion, collection, doc, getDocs, query, upDoc } from 'firebase/firestore';
 import { addFriend } from '../firedb';
-import logo from '../img/messengerlogo.png';
+import logo from '../img/logo.png';
 import Image from "next/image";
 import profile from '../img/profile.jpg';
 import chat from '../img/chats.png';

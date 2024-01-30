@@ -13,7 +13,6 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { storage } from '../firebase';
-
 import { v4 as uuid } from "uuid";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { UserAuth } from "../Context/AuthContext";
@@ -191,7 +190,7 @@ const Input = ({ user, ChatId }) => {
                         
                    </div>:<></> }
     <div class="m-4 flex items-center ">
-      <a href="#"> <Image src={Fire} alt="" class="flex-1 rounded-full w-8 h-8 mr-2  hover:bg-gray-100" /></a>
+     
       <input
         type="file"
         id="file"

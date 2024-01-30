@@ -3,9 +3,11 @@
 import React, { useEffect, useState } from 'react';
 import { logInWithEmailAndPassword, signInWithGoogle } from '../firebase';
 import { UserAuth } from '../Context/AuthContext';
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
+import google from '../img/google.png';
+import Image from 'next/image';
 
-const Login = ({onClk}) => {
+const Login = ({ onClk }) => {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [errors, setErrors] = useState({});
     const { user } = UserAuth();
@@ -34,27 +36,29 @@ const Login = ({onClk}) => {
         if (Object.keys(newErrors).length === 0) {
             // Form is valid, you can submit the data or perform additional actions here
             // 
-            const stat = await logInWithEmailAndPassword(formData.email,formData.password)
-            stat&&router.push( "/dashboard", undefined, { shallow: true })
-            
-            
+            const stat = await logInWithEmailAndPassword(formData.email, formData.password)
+            stat && router.push("/dashboard", undefined, { shallow: true })
+
+
         }
     };
-    const handleSignWithGoogle = ()=> {
+    const handleSignWithGoogle = () => {
         signInWithGoogle();
-        if(user){
-            router.push( "/dashboard", undefined, { shallow: true });
-            
+        if (user) {
+            router.push("/dashboard", undefined, { shallow: true });
+
 
         }
-        
-    }
-    useEffect(()=>{  if(user){
-        router.push( "/dashboard", undefined, { shallow: true });
-        
 
-    }},[user])
-  
+    }
+    useEffect(() => {
+        if (user) {
+            router.push("/dashboard", undefined, { shallow: true });
+
+
+        }
+    }, [user])
+
     return (
         <div className="flex items-center justify-center">
             <div className="bg-white p-8 rounded-lg shadow-md w-96">
@@ -90,9 +94,10 @@ const Login = ({onClk}) => {
                 </form>
                 <div className="orr mt-2 w-75">Or</div>
                 <div className="grid">
-                <button className="border border-dark text-lg text-center" onClick={handleSignWithGoogle} type="submit">
-                    Continue with Google
-                </button>
+                    <button className="border border-dark text-lg text-center flex items-center justify-center" onClick={handleSignWithGoogle} type="submit">
+                        <Image src={google} hight={50} width={50} alt="Google Logo" className="h-6 w-6 mr-2" />
+                        Continue with Google
+                    </button>
                 </div>
                 <div className="mt-4 text-gray-600 text-sm text-center">
                     Dont have an account? <a href="#" onClick={onClk} className="text-blue-500 hover:underline">Sign up</a>

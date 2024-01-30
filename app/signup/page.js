@@ -5,6 +5,9 @@ import { UserAuth } from '../Context/AuthContext';
 import { useRouter } from 'next/navigation'
 import { useAuthState } from "react-firebase-hooks/auth";
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import Image from 'next/image';
+import google from '../img/google.png';
+
 
 
 
@@ -180,9 +183,10 @@ const Signup = ({onClk}) => {
                 </form>
                 <div className="orr mt-2 w-75">Or</div>
                 <div className="grid">
-                <button className="border border-dark text-lg text-center" onClick={handleSignWithGoogle} type="submit">
-                    Continue with Google
-                </button>
+                    <button className="border border-dark text-lg text-center flex items-center justify-center" onClick={handleSignWithGoogle} type="submit">
+                        <Image src={google} hight={50} width={50} alt="Google Logo" className="h-6 w-6 mr-2" />
+                        Continue with Google
+                    </button>
                 </div>
 
                 <div className="mt-4 text-gray-600 text-sm text-center">
