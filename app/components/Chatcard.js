@@ -10,6 +10,7 @@ import { db } from '../firebase';
 import { inDB } from '../inDB';
 
 
+
 const ChatCard = ({ user, Uid, chatId, onclk }) => {
   const { placeholderurl } = UserAuth();
   const [info, setInfo] = useState({
@@ -123,16 +124,16 @@ const ChatCard = ({ user, Uid, chatId, onclk }) => {
     //     </div>
     //   </div>
     // </Link>
-    // <div onClick={onclk} class="p-2 m-2 w-16  cursor-pointer  rounded-lg shadow-lg transition transform hover:scale-105 hover:shadow-xl rounded-md  lg:w-80  lg:flex">
+    // <div onClick={onclk} className="p-2 m-2 w-16  cursor-pointer  rounded-lg shadow-lg transition transform hover:scale-105 hover:shadow-xl rounded-md  lg:w-80  lg:flex">
 
-    <div onClick={onclk} class="p-2 m-2    cursor-pointer  rounded-lg shadow-lg transition  hover:scale-105 hover:shadow-xl   lg:w-80  lg:flex ">
+    <div onClick={onclk} className="p-2 m-2    cursor-pointer  rounded-lg shadow-lg transition  hover:scale-105 hover:shadow-xl   lg:w-80  lg:flex ">
 
-      <div class="lg:flex lg:justify-items-center w-16 lg:w-32 " >
-        <a href="#"> <img src={info ? info.PhotoUrl : placeholderurl} alt="" class="rounded-full w-16 h-16 " /></a>
+      <div className="lg:flex lg:justify-items-center w-16 lg:w-32 " >
+        <a href="#"> <img src={info ? info.PhotoUrl : placeholderurl} alt="" className="rounded-full w-16 h-16 " /></a>
       </div>
 
-      <div class=" invisible w-0 h-0 lg:visible lg:w-full lg:h-full lg:flex lg:justify-between">
-        <div class="   ">
+      <div className=" invisible w-0 h-0 lg:visible lg:w-full lg:h-full lg:flex lg:justify-between">
+        <div className="   ">
           <strong>{info ? info.Fullname : "Loading..."}</strong>
           <div className="flex w-full justify-between ">
             <span className="text-lg overflow-ellipsis overflow-hidden">
@@ -150,8 +151,8 @@ const ChatCard = ({ user, Uid, chatId, onclk }) => {
           </div>
         </div>
 
-        {/* <div class="">
-                <a href="#"> <Image src={threedot} alt="" class="rounded-full w-8 h-8  bg-gray-200"/></a>
+        {/* <div className="">
+                <a href="#"> <Image src={threedot} alt="" className="rounded-full w-8 h-8  bg-gray-200"/></a>
         </div> */}
       </div>
     </div>

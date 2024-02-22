@@ -11,6 +11,7 @@ import bg from './img/bg.jpeg';
 
 export default function Home() {
     const [status, setStatus] = useState(true);
+
     return (
         <main className='  bg-gray-100 h-screen '>
 
@@ -61,7 +62,7 @@ export default function Home() {
 
 
 
-            <div className='bg-gray-100 h-max md:flex    md:justify-center'>
+            <div className='bg-gray-100  md:flex    md:justify-center'>
 
 
 
@@ -69,12 +70,12 @@ export default function Home() {
 
                 <div className='pt-3 pl-10 pr-10 w-full md:w-1/2 bg-gray-100 item-center '>
                     <h1 className='text-4xl font-bold text-blue-800'>Welcome to E-Barta</h1>
-                    <p className='mt-4 text-lg text-gray-700'>Your go-to platform for secure, private, and reliable messaging. We believe in the power of communication and the right to privacy, which is why we have created a messenger that is end-to-end encrypted.</p>
+                    <p className='mt-4 text-lg text-gray-700'>Your platform for secure, private, and reliable messaging. We believe in the power of communication and the right to privacy, which is why we have created a messenger that is end-to-end encrypted.</p>
 
                     <h2 className='mt-8 text-3xl font-bold text-blue-800'>Why Choose E-Barta?</h2>
                     <ul className='mt-4 text-lg text-gray-700 list-disc list-inside'>
                         <li><strong>End-to-End Encryption:</strong> Your messages are secured with top-notch encryption from the moment they leave your device until they reach the recipients. No one else, not even E-Barta, can read them.</li>
-                        <li><strong>Futuristic and User-Friendly:</strong> Our platform combines cutting-edge technology with a user-friendly interface. Experience the future of communication today with our 3D chat representations.</li>
+                        <li><strong>Futuristic and User-Friendly:</strong> Our platform combines cutting-edge technology with a user-friendly interface. Experience the future of communication today with our Platform.</li>
                         <li><strong>Reliable and Fast:</strong> E-Barta is designed to deliver your messages quickly and reliably, even on slow networks or in remote areas.</li>
                         <li><strong>Free and Global:</strong> With E-Barta, you can send messages, make calls, and share media, all for free. Connect with people around the world without worrying about fees or subscriptions.</li>
                     </ul>
@@ -97,7 +98,7 @@ export default function Home() {
             </div>
 
 
-            {/* <footer class="  bg-gray-400 text-white  text-center  ">
+            {/* <footer className="  bg-gray-400 text-white  text-center  ">
         <p>&copy; 2024 Encrypted Messenger. All rights reserved.</p>
     </footer> */}
 

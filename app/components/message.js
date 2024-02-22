@@ -3,12 +3,16 @@ import { UserAuth } from "../Context/AuthContext";
 import { decryptAES } from "../aes";
 import { inDB } from "../inDB";
 import { exchangeKey } from "../firedb";
+import { useRouter } from 'next/navigation';
+
 
 
 const Message = ({ user, freindname,  message, freindphoto,ChatId }) => {
   const { placeholderurl} = UserAuth();
   const [keys, setMyRSA] = useState(null)
   const [msg, setMsg] = useState("Loading...")
+
+ 
   useEffect(()=>{
     const keySet = async()=> {
       const chatkey = await inDB.chatCred.where("chatId").equals(ChatId).first();
@@ -98,28 +102,28 @@ const bytesToKB = (bytes) => {
     // </div>
     
   
-    <div class={` ${message.SenderId === user.uid ? "justify-items-end":"justify-items-start"}   mt-3  grid  text-left text-white `}>
-        {/* <p class="text-gray-400  ml-2  mb-2 text-sm">{freindname&&message.SenderId === user.uid ?user.displayName.split(" ")[0]:freindname.split(" ")[0]}</p> */}
-        <div onLoad={scrollToBottom()} class={`flex ${message.SenderId === user.uid ? "flex-row":"flex-row-reverse"}  `}>
+    <div className={` ${message.SenderId === user.uid ? "justify-items-end":"justify-items-start"}   mt-3  grid  text-left text-white `}>
+        {user.displayName&& <p className={`text-gray-400  ml-2  mb-2 text-sm ${message.SenderId === user.uid ? "pr-14":"pl-14"}`}>{freindname&&message.SenderId === user.uid ?user.displayName.split(" ")[0]:freindname.split(" ")[0]}</p>}
+        <div onLoad={scrollToBottom()} className={`flex ${message.SenderId === user.uid ? "flex-row":"flex-row-reverse"}  `}>
         <br/>
             {
               message.file?
               message.type&&message.type.includes("image")?
-                <a href={message.file}> <img src={message.file} alt="" class=" w-26 h-36 mx-2 rounded"/></a>
-                :<a href={message.file} target="_blank"><div class=" flex bg-gray-200 rounded-lg p-2 cursor-pointer">
-                 <img src="https://ucarecdn.com/20348574-5489-4974-970e-0b8026353cf0/Pngtreefileicon_4419863.png" alt="" class="rounded-full w-10 h-10 mr-2 "/>
-                <div class="">
-                    <h1 class="text-lg text-black">{message.name}</h1>
-                    <p class="text-blue">{message.size>(1024*1024)?`${bytesToMB(message.size)}} MB`:`${bytesToKB(message.size)} KB`}</p>
+                <a href={message.file}> <img src={message.file} alt="" className=" w-26 h-36 mx-2 rounded"/></a>
+                :<a href={message.file} target="_blank"><div className=" flex bg-gray-200 rounded-lg p-2 cursor-pointer">
+                 <img src="https://ucarecdn.com/20348574-5489-4974-970e-0b8026353cf0/Pngtreefileicon_4419863.png" alt="" className="rounded-full w-10 h-10 mr-2 "/>
+                <div className="">
+                    <h1 className="text-lg text-black">{message.name}</h1>
+                    <p className="text-blue">{message.size>(1024*1024)?`${bytesToMB(message.size)}} MB`:`${bytesToKB(message.size)} KB`}</p>
                 </div>
             </div></a>
-            : <p class={`bg-blue-600  p-2 text-xl  rounded-b-xl ${message.SenderId === user.uid ? "rounded-l-xl":"rounded-r-xl"}  `}> {msg }  </p>
+            : <p className={`bg-blue-600  p-2 text-xl  rounded-b-xl ${message.SenderId === user.uid ? "rounded-l-xl":"rounded-r-xl"}  `}> {msg }  </p>
 
             }
            
             <a href="#"> <img src={message.SenderId === user.uid
               ? (user.photoURL?user.photoURL:placeholderurl)
-              : freindphoto} alt="" class="rounded-full w-10 h-10 mx-2 "/></a>
+              : freindphoto} alt="" className="rounded-full w-10 h-10 mx-2 "/></a>
         </div>
       </div>
   );

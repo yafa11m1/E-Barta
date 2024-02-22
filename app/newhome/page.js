@@ -140,7 +140,7 @@ export default function Home() {
 </div>
 
 
-  {/* <footer class="  bg-gray-400 text-white  text-center  ">
+  {/* <footer className="  bg-gray-400 text-white  text-center  ">
         <p>&copy; 2024 Encrypted Messenger. All rights reserved.</p>
     </footer> */}
 

@@ -7,7 +7,8 @@ import { auth,
     logInWithEmailAndPassword,
     registerWithEmailAndPassword,
     sendPasswordReset,
-    logout
+    logout,
+    status,
      } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 

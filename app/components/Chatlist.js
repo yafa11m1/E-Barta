@@ -51,32 +51,32 @@ const Chatlist = ({ myRsa,user, setactive }) => {
     }, [user]);
   return (
     
-    <div id="second" class="xl:col-span-3 lg:col-span-4 md:col-span-2 sm:col-span-3 col-span-3 h-screen  border-r-2  bg-gray-50 ">
-                 <div class="p-2 ">
-                    <div class=" lg:flex lg:justify-between  ">
-                        <strong class="text-2xl">CHATS</strong>
-                        <div class="invisible w-0 h-0 lg:visible lg:w-fit lg:h-fit">
+    <div id="second" className="xl:col-span-3 lg:col-span-4 md:col-span-2 sm:col-span-3 col-span-3 h-screen  border-r-2  bg-gray-50 ">
+                 <div className="p-2 ">
+                    <div className=" lg:flex lg:justify-between  ">
+                        <strong className="text-2xl">CHATS</strong>
+                        {/* <div className="invisible w-0 h-0 lg:visible lg:w-fit lg:h-fit">
                             <a href="#">
-                                <Image src={icreate} alt="" class=" hover:bg-gray-200 lg:w-6 lg:h-6  lg:rounded-md"/>
+                                <Image src={icreate} alt="" className=" hover:bg-gray-200 lg:w-6 lg:h-6  lg:rounded-md"/>
                             </a>
-                        </div>
+                        </div> */}
                     </div>
         
                     
-                    <div class=" ">
+                    <div className=" ">
                         
-                        {/* <input type="search" placeholder="Search Messenger"  class="p-2 w-16 lg:w-full bg-gray-200  rounded-2xl"/> */}
+                        {/* <input type="search" placeholder="Search Messenger"  className="p-2 w-16 lg:w-full bg-gray-200  rounded-2xl"/> */}
                         <UserSearch setactive={setactive}/>
                         
                     </div>
        
-                    <hr class="mt-2"/>
+                    <hr className="mt-2"/>
 
-                    <h1 class="invisible w-0 h-0 lg:visible lg:w-fit lg:h-fit">Recent Chats</h1>
+                    <h1 className="invisible w-0 h-0 lg:visible lg:w-fit lg:h-fit">Recent Chats</h1>
         
                  </div>
         
-                    <div class="h-2/3 overflow-auto ">
+                    <div className="h-2/3 overflow-auto ">
 
 
                        {ChatLst && ChatLst.map(  (chatID) => {

@@ -5,18 +5,15 @@ import { UserAuth } from '../Context/AuthContext';
 import { useRouter } from 'next/navigation'
 import { useAuthState } from "react-firebase-hooks/auth";
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import Image from 'next/image';
-import google from '../img/google.png';
 
 
 
-
-const Signup = ({onClk}) => {
-    const {auth, registerWithEmailAndPassword, signInWithGoogle,  } = UserAuth();
+const Signup = () => {
+    const { auth, registerWithEmailAndPassword, signInWithGoogle, } = UserAuth();
     const [user] = useAuthState(auth);
 
     const [formData, setFormData] = useState({
-        fullname:'',
+        fullname: '',
         username: '',
         email: '',
         phone: '',
@@ -27,7 +24,7 @@ const Signup = ({onClk}) => {
     const router = useRouter();
 
 
-  
+
 
     const [errors, setErrors] = useState({});
 
@@ -47,7 +44,7 @@ const Signup = ({onClk}) => {
         }
 
         // Validate username (should contain only letters and numbers)
-        
+
 
         // Validate email
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -71,28 +68,41 @@ const Signup = ({onClk}) => {
 
         if (Object.keys(newErrors).length === 0) {
             // Form is valid, you can submit the data or perform additional actions here
-            // 
-            const stat = await registerWithEmailAndPassword(formData.email,formData.password,formData.gender,formData.phone,formData.fullname);
-            stat&&router.push( "/dashboard", undefined, { shallow: true });
+            // console.log('Form data:', formData);
+            const stat = await registerWithEmailAndPassword(formData.email, formData.password, formData.gender, formData.phone, formData.fullname);
+            stat && router.push("/dashboard", undefined, { shallow: true });
         }
     };
-    const handleSignWithGoogle = async ()=> {
+    const handleSignWithGoogle = async () => {
         await signInWithGoogle();
-        if(user){
-            router.push( "/dashboard", undefined, { shallow: true });
-            
+        if (user) {
+            router.push("/dashboard", undefined, { shallow: true });
+
 
         }
-        
+
     }
-    if(user){
-        
-        return router.push( "/dashboard", undefined, { shallow: true });
+    if (user) {
+
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-100">
+                <div className="bg-white p-8 rounded-lg shadow-md w-96">
+                <h1 className="text-2xl text-center font-semibold mb-4">Welcome {user.displayName}</h1>
+                    <button
+                        onClick={() => window.location.href = '/dashboard'}
+                        className="w-full bg-blue-500 text-white p-2 rounded focus:outline-none focus:border-blue-700"
+                    >
+                        Continue to Dashboard
+                    </button>
+                </div>
+            </div>
+
+        );
 
     }
 
     return (
-        <div className=" flex items-center justify-center bg-gray-100">
+        <div className="min-h-screen flex items-center justify-center bg-gray-100">
             <div className="bg-white p-8 rounded-lg shadow-md w-96">
                 <h1 className="text-2xl font-semibold mb-4">Sign Up for E-Barta</h1>
                 <form onSubmit={handleSubmit}>
@@ -177,20 +187,18 @@ const Signup = ({onClk}) => {
                         />
                         {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword}</p>}
                     </div>
-                    {/* Google reCAPTCHA */}
-                    {/* Implement reCAPTCHA here */}
+                  
                     <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">Sign Up</button>
                 </form>
                 <div className="orr mt-2 w-75">Or</div>
                 <div className="grid">
-                    <button className="border border-dark text-lg text-center flex items-center justify-center" onClick={handleSignWithGoogle} type="submit">
-                        <Image src={google} hight={50} width={50} alt="Google Logo" className="h-6 w-6 mr-2" />
+                    <button className="border border-dark text-lg text-center" onClick={handleSignWithGoogle} type="submit">
                         Continue with Google
                     </button>
                 </div>
 
                 <div className="mt-4 text-gray-600 text-sm text-center">
-                    Already have an account? <a href="#" onClick={onClk} className="text-blue-500 hover:underline">Log in</a>
+                    Already have an account? <a href="#" className="text-blue-500 hover:underline">Log in</a>
                 </div>
 
             </div>

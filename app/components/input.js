@@ -165,31 +165,31 @@ const Input = ({ user, ChatId }) => {
     //   </div>
     // </div>
     !loading?<>
-     {img?img.type.includes("image")?<div class=" flex relative  sm:mx-20 mx-20 ">
+     {img?img.type.includes("image")?<div className=" flex relative  sm:mx-20 mx-20 ">
                         
-                        <Image src={img.preview} alt=""  width={100} height={50} class=" mx-2 rounded w-14 h-16  "/>
-                        <div class=" absolute top-0 left-0">
+                        <Image src={img.preview} alt=""  width={100} height={50} className=" mx-2 rounded w-14 h-16  "/>
+                        <div className=" absolute top-0 left-0">
                            <a onClick={clearfile}>
-                               <Image  src={close} alt="" class="  rounded-full w-6 cursor-pointer "/>
+                               <Image  src={close} alt="" className="  rounded-full w-6 cursor-pointer "/>
                            </a>
                        </div>
                         
-    </div>:<div class=" flex relative  sm:mx-20 mx-20 ">
-                        <div class=" flex bg-gray-200 rounded-lg p-2 ">
-                            <a href="#"> <Image src={attach} alt="" class="rounded-full w-10 h-10 mr-2 "/></a>
-                            <div class="">
-                                <h1 class="text-lg">{img.name}</h1>
+    </div>:<div className=" flex relative  sm:mx-20 mx-20 ">
+                        <div className=" flex bg-gray-200 rounded-lg p-2 ">
+                            <a href="#"> <Image src={attach} alt="" className="rounded-full w-10 h-10 mr-2 "/></a>
+                            <div className="">
+                                <h1 className="text-lg">{img.name}</h1>
                                 <p>{img.size>(1024*1024)?`${bytesToMB(img.size)}} MB`:`${bytesToKB(img.size)} KB`}</p>
                             </div>
                         </div>
-                        <div class=" absolute top-0 left-0">
+                        <div className=" absolute top-0 left-0">
                         <a onClick={clearfile}>
-                               <Image  src={close} alt="" class="  rounded-full w-6 cursor-pointer "/>
+                               <Image  src={close} alt="" className="  rounded-full w-6 cursor-pointer "/>
                            </a>
                        </div>
                         
                    </div>:<></> }
-    <div class="m-4 flex items-center ">
+    <div className="m-4 flex items-center ">
      
       <input
         type="file"
@@ -210,8 +210,8 @@ const Input = ({ user, ChatId }) => {
         onChange={(e) => setText(prevState=>{ return e.target.value})}
         value={text}
         onKeyDown={handleKeyDown}
-        class="flex-1 p-3 border border-gray-300 rounded-full" />
-      <a onClick={handleSend} href="#"> <Image src={sendbutton} alt="" class="flex-1 rounded-full w-12 h-14 mr-2  hover:bg-gray-100" /></a>
+        className="flex-1 p-3 border border-gray-300 rounded-full" />
+      <a onClick={handleSend} href="#"> <Image src={sendbutton} alt="" className="flex-1 rounded-full w-12 h-14 mr-2  hover:bg-gray-100" /></a>
     </div></>:<Spinner/>
   );
 };

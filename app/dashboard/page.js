@@ -95,12 +95,12 @@ const Page = ({is}) => {
 
     return (
         
-            !loading?user? !userlist?( <div class="grid grid-cols-12  h-screen ">
+            !loading?user? !userlist?( <div className="grid grid-cols-12  h-screen ">
             <Header myRsa={myRsa} setuserlist={setuserlist} user={User}/>
             <Chatlist myRsa={myRsa} user={User}setactive={setactiveChat}/>
             <Chatbox myRsa={myRsa} user={User} uid = {activeChat}/>
             
-        </div>):(<div class="grid grid-cols-12  h-screen ">
+        </div>):(<div className="grid grid-cols-12  h-screen ">
             <Header myRsa={myRsa} setuserlist={setuserlist} user={User}/>
             <Userlist myRsa={myRsa} user={User} setactive={setactiveChat}/>
             <Chatbox myRsa={myRsa} user={User} uid = {activeChat}/>

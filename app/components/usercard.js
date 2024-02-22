@@ -79,21 +79,21 @@ const UserCard = ({ user, Uid,myUid, onclk }) => {
     //     </div>
     //   </div>
     // </Link>
-    // <div onClick={onclk} class="p-2 m-2 w-16  cursor-pointer  rounded-lg shadow-lg transition transform hover:scale-105 hover:shadow-xl rounded-md  lg:w-80  lg:flex">
+    // <div onClick={onclk} className="p-2 m-2 w-16  cursor-pointer  rounded-lg shadow-lg transition transform hover:scale-105 hover:shadow-xl rounded-md  lg:w-80  lg:flex">
 
-    <div onClick={()=> {clicked(user.Uid);onclk()}} class="p-2 m-2 w-16  cursor-pointer  rounded-lg shadow-lg transition  hover:scale-105 hover:shadow-xl   lg:w-80  lg:flex">
+    <div onClick={()=> {clicked(user.Uid);onclk()}} className="p-2 m-2 w-16  cursor-pointer  rounded-lg shadow-lg transition  hover:scale-105 hover:shadow-xl   lg:w-80  lg:flex">
 
-      <div class="lg:flex lg:justify-items-center w-32 " >
-        <a href="#"> <img src={user ? user.PhotoUrl : placeholderurl} alt="" class="rounded-full w-16 h-16 " /></a>
+      <div className="lg:flex lg:justify-items-center w-32 " >
+        <a href="#"> <img src={user ? user.PhotoUrl : placeholderurl} alt="" className="rounded-full w-16 h-16 " /></a>
       </div>
 
-      <div class=" invisible w-0 h-0 lg:visible lg:w-full lg:h-full lg:flex lg:justify-between">
-        <div class="   ">
+      <div className=" invisible w-0 h-0 lg:visible lg:w-full lg:h-full lg:flex lg:justify-between">
+        <div className="   ">
           <strong>{user ? user.Fullname : "Loading..."}</strong>
         </div>
 
-        {/* <div class="">
-                <a href="#"> <Image src={threedot} alt="" class="rounded-full w-8 h-8  bg-gray-200"/></a>
+        {/* <div className="">
+                <a href="#"> <Image src={threedot} alt="" className="rounded-full w-8 h-8  bg-gray-200"/></a>
         </div> */}
       </div>
     </div>

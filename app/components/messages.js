@@ -3,17 +3,21 @@ import React, { useContext, useEffect, useState } from "react";
 import { db } from "../firebase";
 import Message from "./message";
 import { inDB } from "../inDB";
+import { GetRSApubKey, updatePubkey } from "../firedb";
+import { decryptWithPrivateKeyInteger, encryptWithPublicKeyInteger } from "../rsa";
 
 
-const Messages = ({user,ChatId,freindname, freindphoto}) => {
+const Messages = ({user,ChatId,freindname, freindphoto, id}) => {
   const [messages, setMessages] = useState([]);
-  const [chatKeys, setMyRSA] = useState(null)
+  const [chatKeys, setMyRSA] = useState(null);
+  const keySet = async()=> {
+    const chatkey = await inDB.chatCred.where("chatId").equals(ChatId).first();
+      // 
+      setMyRSA(chatkey) 
+  }
+
   useEffect(()=>{
-    const keySet = async()=> {
-      const chatkey = await inDB.chatCred.where("chatId").equals(ChatId).first();
-        // 
-        setMyRSA(chatkey) 
-    }
+    
     if(ChatId){
       keySet();
     }
@@ -22,8 +26,11 @@ const Messages = ({user,ChatId,freindname, freindphoto}) => {
 },[user])
   // 
   useEffect(() => {
+   
     const unSub = onSnapshot(doc(db, "chats", ChatId ), (doc) => {
       doc.exists() && setMessages(doc.data().messages);
+      // exchangeKey();
+
     });
 
     return () => {

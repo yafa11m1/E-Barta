@@ -6,11 +6,14 @@ import { UserAuth } from '../Context/AuthContext';
 import { useRouter } from 'next/navigation';
 import google from '../img/google.png';
 import Image from 'next/image';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const Login = ({ onClk }) => {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [errors, setErrors] = useState({});
-    const { user } = UserAuth();
+    const { auth, registerWithEmailAndPassword, signInWithGoogle, } = UserAuth();
+    const [user] = useAuthState(auth);
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -51,14 +54,24 @@ const Login = ({ onClk }) => {
         }
 
     }
-    useEffect(() => {
-        if (user) {
-            router.push("/dashboard", undefined, { shallow: true });
+    if (user) {
+        
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-100">
+                <div className="bg-white p-8 rounded-lg shadow-md w-96">
+                    <h1 className="text-2xl text-center font-semibold mb-4">Welcome {user.displayName}</h1>
+                    <button
+                        onClick={() => window.location.href = '/dashboard'}
+                        className="w-full bg-blue-500 text-white p-2 rounded focus:outline-none focus:border-blue-700"
+                    >
+                        Continue to Dashboard
+                    </button>
+                </div>
+            </div>
 
+        );
 
-        }
-    }, [user])
-
+    }
     return (
         <div className="flex items-center justify-center">
             <div className="bg-white p-8 rounded-lg shadow-md w-96">
