@@ -7,10 +7,11 @@ import { useRouter } from 'next/navigation';
 
 
 
-const Message = ({ user, freindname,  message, freindphoto,ChatId }) => {
+const Message = ({ user, freindname,  message, freindphoto,ChatId,myname }) => {
   const { placeholderurl} = UserAuth();
-  const [keys, setMyRSA] = useState(null)
-  const [msg, setMsg] = useState("Loading...")
+  const [keys, setMyRSA] = useState(null);
+  const [msg, setMsg] = useState("Loading...");
+  
 
  
   useEffect(()=>{
@@ -27,9 +28,11 @@ const Message = ({ user, freindname,  message, freindphoto,ChatId }) => {
     if(ChatId){
       keySet();
     }
-    
+   
 
 },[user])
+
+
 
 useEffect(()=>{
   const loadmsg = ()=>{
@@ -45,28 +48,13 @@ useEffect(()=>{
   }
   keys&&loadmsg()
  
-},[keys])
-  const scrollToBottom = () => {
+},[keys]);
+const scrollToBottom = () => {
     const chatBox = document.getElementById('messagescroll');
     if (chatBox) {
     chatBox.scrollTop = chatBox.scrollHeight;
     }
   };
-// const newmsg  = async ()=>{
-//   try{
-//     await exchangeKey(user.uid, ChatId.replace(user.uid, ""))
-//     const chatkey = await inDB.chatCred.where("chatId").equals(ChatId).first()
-//     setMyRSA(prestate=>{return chatkey}) 
-//     return decryptAES(message.Text,chatkey.frnd_key, keys.frnd_iv)
-//   }
-//   catch(er){
-//     
-//     alert("An error occured please refresh your browser")
-//   }
-  
-
-
-// }
 
 const bytesToMB = (bytes) => {
   const megabytes = bytes / (1024 * 1024);
@@ -79,31 +67,10 @@ const bytesToKB = (bytes) => {
 
   return (
 
-    // <div
-    //   ref={ref}
-    //   className={`message ${message.SenderId === user.uid && "owner"}`}
-    // >
-    //   <div className="messageInfo">
-    //     <img
-    //       src={
-    //         message.SenderId === user.uid
-    //           ? user.photoURL
-    //           : placeholderurl
-    //       }
-    //       alt=""
-    //       className="w-8 h-8 rounded-full object-cover"
-    //     />
-        
-    //   </div>
-    //   <div className="messageContent">
-    //     <p>{message.Text}</p>
-    //     {message.img && <img src={message.img} alt="" />}
-    //   </div>
-    // </div>
-    
+
   
-    <div className={` ${message.SenderId === user.uid ? "justify-items-end":"justify-items-start"}   mt-3  grid  text-left text-white `}>
-        {user.displayName&& <p className={`text-gray-400  ml-2  mb-2 text-sm ${message.SenderId === user.uid ? "pr-14":"pl-14"}`}>{freindname&&message.SenderId === user.uid ?user.displayName.split(" ")[0]:freindname.split(" ")[0]}</p>}
+    <div className={` ${message.SenderId === user.uid ? "justify-items-end animate-slide-in-from-right":"justify-items-start animate-slide-in-from-left"}   mt-3  grid  text-left text-white `}>
+        {(freindname&&user) && <p className={`text-gray-400  ml-2  mb-2 text-sm ${message.SenderId === user.uid ? "pr-14":"pl-14"}`}>{(myname&& freindname) && message.SenderId === user.uid ?myname.split(" ")[0]:freindname.split(" ")[0]}</p>}
         <div onLoad={scrollToBottom()} className={`flex ${message.SenderId === user.uid ? "flex-row":"flex-row-reverse"}  `}>
         <br/>
             {
@@ -124,7 +91,35 @@ const bytesToKB = (bytes) => {
             <a href="#"> <img src={message.SenderId === user.uid
               ? (user.photoURL?user.photoURL:placeholderurl)
               : freindphoto} alt="" className="rounded-full w-10 h-10 mx-2 "/></a>
+            
         </div>
+        <style jsx>{`
+        .animate-slide-in-from-left {
+          animation: slide-in 0.5s forwards;
+        }
+
+
+        @keyframes slide-in {
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(0);
+          }
+        }
+        .animate-slide-in-from-right {
+          animation: slide-in-right 0.5s forwards;
+        }
+      
+        @keyframes slide-in-right {
+          0% {
+            transform: translateX(100%);
+          }
+          100% {
+            transform: translateX(0);
+          }
+        }
+      `}</style>
       </div>
   );
 };

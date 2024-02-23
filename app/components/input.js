@@ -143,27 +143,7 @@ const Input = ({ user, ChatId }) => {
     setImg(prevState=>{ return null});
   }
   return (
-    // <div className="input">
-    //   <input
-    //     type="text"
-    //     placeholder="Type something..."
-    //     onChange={(e) => setText(e.target.value)}
-    //     value={text}
-    //   />
-    //   <div className="send">
-    //     <img src={attachfile} alt="" />
-    //     <input
-    //       type="file"
 
-    //       id="file"
-    //       onChange={(e) => setImg(e.target.files[0])}
-    //     />
-    //     <label htmlFor="file">
-    //       <img src={sendbutton} alt="" />
-    //     </label>
-    //     <button onClick={handleSend}>Send</button>
-    //   </div>
-    // </div>
     !loading?<>
      {img?img.type.includes("image")?<div className=" flex relative  sm:mx-20 mx-20 ">
                         

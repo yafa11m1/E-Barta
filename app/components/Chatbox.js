@@ -20,7 +20,8 @@ const Chatbox = ({ user, myRsa, uid }) => {
         Uid: "",
         PhotoUrl: "",
         Email: "",
-        Fullname: ""
+        Fullname: "",
+        Myname:""
     })
 
     const id = uid;
@@ -76,7 +77,6 @@ const Chatbox = ({ user, myRsa, uid }) => {
                                 frnd_iv: FiV,
                                 frnd_key: Fkey
                             }
-                            // sessionStorage.setItem(chatId,JSON.stringify(updatedkeys));
 
                             inDB.chatCred.put(updatedkeys)
 
@@ -91,14 +91,6 @@ const Chatbox = ({ user, myRsa, uid }) => {
             }
             else {
 
-                // sessionStorage.setItem(chatId,JSON.stringify({
-                //     iv:generateRandomValue(),
-                //     key:generateRandomValue(),
-                //     Id:chatId,
-                //     friend_iv:'',
-                //     friend_key:''
-                //  }))
-                //   chatCred: 'chatId, iv, key, frnd_iv, frnd_key',
                 const IV = generateRandomValue();
                 const KEY = generateRandomValue();
                 inDB.chatCred.add({
@@ -131,33 +123,20 @@ const Chatbox = ({ user, myRsa, uid }) => {
 
 
 
-        // keys&&keys.iv==""?setSecret(keys):setSecret({
-        //         iv:generateRandomValue(),
-        //         key:generateRandomValue(),
-        //         Id:chatId
-        // })
-        // 
-        // sessionStorage.setItem(chatId,JSON.stringify(secretKey));
-        // const secret = secretKey.iv+":"+secretKey.key; // iv and key for exchange
-        // GetRSApubKey(chatId,id).then((FrndPubkey)=>{
-        //     //Updating Encrypted Keys
-        //     // const encSecret = encryptWithPublicKeyInteger(secret,FrndPubkey); // ecncrypted IV and Key with Friends RSA Pub key
-        //     // updatePubkey(chatId,user.uid,encSecret);
-        // });
         if (chatId != 'loading' && !chatId.includes('null')) {
             exchangeKey();
         }
 
-        // return () => {
-        //     exchangeKey();
-        //   };
-
+     
 
     }, [uid])
     //   
     useEffect(() => {
         userInfo(id).then((r) => {
-            setInfo(r);
+            setInfo({
+                ...r,
+                Myname:user.displayName
+            });
             // 
         })
     }, [id])
@@ -169,7 +148,7 @@ const Chatbox = ({ user, myRsa, uid }) => {
 
     return (
 
-        <div id="third " className="w-full xl:col-span-8 lg:col-span-7 md:col-span-10 sm:col-span-9 col-span-9 px-1    " >
+        <div id="third " className="w-full animate-slide-in-from-right xl:col-span-8 lg:col-span-7 md:col-span-10 sm:col-span-9 col-span-9 px-1    " >
             <div className="h-screen  flex flex-col justify-between ">
                 <div className="p-6  bg-gray-200 rounded-lg">
                     <div className="  flex  justify-between">
@@ -190,7 +169,6 @@ const Chatbox = ({ user, myRsa, uid }) => {
                     </div>
 
                     </div>
-                    {/* <hr className="m-x-1 mt-2"/> */}
                     
 
 
@@ -198,7 +176,7 @@ const Chatbox = ({ user, myRsa, uid }) => {
 
 
                 <div className="overflow-auto " id='messagescroll'>
-                    <Messages  user={user} id ={id} freindname={info && info.Fullname} scroll={scrollToBottom} freindphoto={info && info.PhotoUrl} ChatId={chatId} />
+                    <Messages  user={user} id ={id} freindname={info? info.Fullname:""} myname={info? info.Myname:""}  scroll={scrollToBottom} freindphoto={info && info.PhotoUrl} ChatId={chatId} />
                 </div>
 
 

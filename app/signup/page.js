@@ -54,10 +54,15 @@ const Signup = () => {
 
         // Add your phone number validation logic here if needed
 
-        // Validate password (at least 8 characters)
+        // Validate password (at least 8 characters, 1 uppercase letter, 1 special character)
         if (formData.password.length < 8) {
             newErrors.password = 'Password must be at least 8 characters long.';
+        } else if (!/[A-Z]/.test(formData.password)) {
+            newErrors.password = 'Password must contain at least one uppercase letter.';
+        } else if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(formData.password)) {
+            newErrors.password = 'Password must contain at least one special character.';
         }
+
 
         // Confirm password
         if (formData.password !== formData.confirmPassword) {
@@ -87,7 +92,7 @@ const Signup = () => {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-100">
                 <div className="bg-white p-8 rounded-lg shadow-md w-96">
-                <h1 className="text-2xl text-center font-semibold mb-4">Welcome {user.displayName}</h1>
+                    <h1 className="text-2xl text-center font-semibold mb-4">Welcome {user.displayName}</h1>
                     <button
                         onClick={() => window.location.href = '/dashboard'}
                         className="w-full bg-blue-500 text-white p-2 rounded focus:outline-none focus:border-blue-700"
@@ -187,7 +192,7 @@ const Signup = () => {
                         />
                         {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword}</p>}
                     </div>
-                  
+
                     <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">Sign Up</button>
                 </form>
                 <div className="orr mt-2 w-75">Or</div>

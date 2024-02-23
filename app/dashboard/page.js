@@ -39,6 +39,7 @@ const Page = ({is}) => {
     const checkRSA = async ()=>{
         const rsakey = await inDB.userCred.where("uid").equals(user.uid).first()
         // 
+        sessionStorage.setItem('myname',user.displayName)
         setMyRSA(prevState=>{ return rsakey})
         if(!rsakey){
             const keys =  getKeyInteger(user.uid);

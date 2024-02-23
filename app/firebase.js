@@ -7,6 +7,7 @@ import {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   signOut,
+  updateProfile,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -119,6 +120,11 @@ const registerWithEmailAndPassword = async (email, password,gender,phone, fullna
       Chats:[],
       onlinestat:"online"
     });
+    await updateProfile(user, {
+      displayName: fullname,
+      phoneNumber: phone     
+
+  })
     
   } catch (err) {
     

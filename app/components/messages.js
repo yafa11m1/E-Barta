@@ -5,9 +5,10 @@ import Message from "./message";
 import { inDB } from "../inDB";
 import { GetRSApubKey, updatePubkey } from "../firedb";
 import { decryptWithPrivateKeyInteger, encryptWithPublicKeyInteger } from "../rsa";
+import { UserAuth } from "../Context/AuthContext";
 
 
-const Messages = ({user,ChatId,freindname, freindphoto, id}) => {
+const Messages = ({user,ChatId,freindname, freindphoto, myname}) => {
   const [messages, setMessages] = useState([]);
   const [chatKeys, setMyRSA] = useState(null);
   const keySet = async()=> {
@@ -43,7 +44,7 @@ const Messages = ({user,ChatId,freindname, freindphoto, id}) => {
   return (
     <div className="messages">
       {messages.map((m) => (
-        <Message user={user} freindname={freindname} keys={chatKeys}freindphoto={freindphoto} ChatId={ChatId} message={m} key={m.id} />
+        <Message user={user}  myname={user.displayName} freindname={freindname} keys={chatKeys}freindphoto={freindphoto} ChatId={ChatId} message={m} key={m.id} />
       ))}
     </div>
   );

@@ -62,26 +62,8 @@ const UserCard = ({ user, Uid,myUid, onclk }) => {
 
 
   return (
-    // <Link href={`/chat/${Uid}`}>
-    //   <div className="block max-w-xs mx-auto mb-4 p-4 bg-white rounded-lg shadow-lg transition transform hover:scale-105 hover:shadow-xl cursor-pointer">
-    //     <div className="flex items-center space-x-4">
-    //       <div className="w-16 h-16">
-    //         <img
-    //           src={info.PhotoUrl || placeholderurl}
-    //           alt={info.Fullname}
-    //           className="w-16 h-16 rounded-full object-cover"
-    //         />
-    //       </div>
-    //       <div>
-    //         <h2 className="text-xl font-semibold">{info.Fullname}</h2>
-    //         <p className="text-gray-500">{info.Email}</p>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </Link>
-    // <div onClick={onclk} className="p-2 m-2 w-16  cursor-pointer  rounded-lg shadow-lg transition transform hover:scale-105 hover:shadow-xl rounded-md  lg:w-80  lg:flex">
 
-    <div onClick={()=> {clicked(user.Uid);onclk()}} className="p-2 m-2 w-16  cursor-pointer  rounded-lg shadow-lg transition  hover:scale-105 hover:shadow-xl   lg:w-80  lg:flex">
+    <div onClick={()=> {clicked(user.Uid);onclk()}} className="p-2 m-2 w-16 animate-slide-in-from-left cursor-pointer  rounded-lg shadow-lg transition  hover:scale-105 hover:shadow-xl   lg:w-80  lg:flex">
 
       <div className="lg:flex lg:justify-items-center w-32 " >
         <a href="#"> <img src={user ? user.PhotoUrl : placeholderurl} alt="" className="rounded-full w-16 h-16 " /></a>

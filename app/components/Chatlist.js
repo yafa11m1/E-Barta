@@ -1,13 +1,6 @@
 'use client'
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import icreate from '../img/icreate-26.png';
-import threedot from '../img/threedot.png';
-import profile from '../img/profile.jpg';
 import UserSearch from "./usersearch";
-import { UserAuth } from "../Context/AuthContext";
-import Spinner from '../components/Spinner';
-import { ChatList } from "../firedb";
 import ChatCard from "./Chatcard";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
@@ -30,16 +23,7 @@ const Chatlist = ({ myRsa,user, setactive }) => {
     }, [user]);
   
   const [ChatLst , setChatLst] = useState([]);
-  // useEffect(()=>{
-  //     const updatelist = async () => {
-  //          const res = await ChatList(user?user.uid:"");
-  //          setChatLst(res);
-  //         //  
-          
-  //       };
-  //       updatelist();
-  
-  //   },[user])
+
   useEffect(() => {
       const unSub = onSnapshot(doc(db, 'users', user&&user.uid||'a' ), (doc) => {
         doc.exists() && setChatLst(prevState=>{ return doc.data().Chats});
@@ -55,17 +39,12 @@ const Chatlist = ({ myRsa,user, setactive }) => {
                  <div className="p-2 ">
                     <div className=" lg:flex lg:justify-between  ">
                         <strong className="text-2xl">CHATS</strong>
-                        {/* <div className="invisible w-0 h-0 lg:visible lg:w-fit lg:h-fit">
-                            <a href="#">
-                                <Image src={icreate} alt="" className=" hover:bg-gray-200 lg:w-6 lg:h-6  lg:rounded-md"/>
-                            </a>
-                        </div> */}
+                  
                     </div>
         
                     
                     <div className=" ">
                         
-                        {/* <input type="search" placeholder="Search Messenger"  className="p-2 w-16 lg:w-full bg-gray-200  rounded-2xl"/> */}
                         <UserSearch setactive={setactive}/>
                         
                     </div>
@@ -91,12 +70,7 @@ const Chatlist = ({ myRsa,user, setactive }) => {
                                         
                                     />
                                     );
-                                
-                                
-                                
-
-                                
-                            })}
+                      })}
         
 
 
