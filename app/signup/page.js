@@ -53,6 +53,12 @@ const Signup = () => {
         }
 
         // Add your phone number validation logic here if needed
+        // Validate phone number (11 digits)
+        const phoneRegex = /^\d{11}$/;
+        if (!formData.phone.match(phoneRegex)) {
+            newErrors.phone = 'Please enter a valid 11-digit phone number.';
+        }
+
 
         // Validate password (at least 8 characters, 1 uppercase letter, 1 special character)
         if (formData.password.length < 8) {
